@@ -1,0 +1,43 @@
+---
+export interface Props {
+	sections?: string[];
+}
+
+const {
+	sections = ["intro", "work", "thoughts", "connect"]
+} = Astro.props;
+---
+
+<nav class="fixed left-8 top-1/2 -translate-y-1/2 z-10 hidden lg:block">
+	<div class="flex flex-col gap-4">
+		{sections.map((section) => (
+			<button
+				data-nav-button={section}
+				class="w-2 h-8 rounded-full transition-all duration-500 bg-muted-foreground/30 hover:bg-muted-foreground/60"
+				aria-label={`Navigate to ${section}`}
+			>
+			</button>
+		))}
+	</div>
+</nav>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		// Add smooth scrolling behavior to navigation buttons
+		const navButtons = document.querySelectorAll('[data-nav-button]');
+
+		navButtons.forEach(button => {
+			button.addEventListener('click', () => {
+				const sectionId = button.getAttribute('data-nav-button');
+				const section = document.querySelector(`[data-section="${sectionId}"]`);
+
+				if (section) {
+					section.scrollIntoView({
+						behavior: 'smooth',
+						block: 'start'
+					});
+				}
+			});
+		});
+	});
+</script>

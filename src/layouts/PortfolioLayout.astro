@@ -1,0 +1,106 @@
+---
+import '../styles/globals.css';
+
+export interface Props {
+	title?: string;
+	description?: string;
+}
+
+const {
+	title = "Portfolio Template",
+	description = "A modern portfolio built with Astro and Tailwind CSS"
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="description" content={description} />
+		<title>{title}</title>
+	</head>
+	<body class="font-sans antialiased">
+		<div class="min-h-screen bg-background text-foreground relative">
+			<slot />
+			<div class="fixed bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background via-background/80 to-transparent pointer-events-none"></div>
+		</div>
+
+		<script>
+			// Theme switching functionality
+			function setTheme(theme) {
+				if (theme === 'dark') {
+					document.documentElement.classList.add('dark');
+					localStorage.setItem('theme', 'dark');
+				} else {
+					document.documentElement.classList.remove('dark');
+					localStorage.setItem('theme', 'light');
+				}
+			}
+
+			// Initialize theme on page load
+			function initTheme() {
+				const savedTheme = localStorage.getItem('theme');
+				const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+				if (savedTheme) {
+					setTheme(savedTheme);
+				} else if (prefersDark) {
+					setTheme('dark');
+				} else {
+					setTheme('light');
+				}
+			}
+
+			// Run on initial load
+			initTheme();
+
+			// Listen for system theme changes
+			window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+				if (!localStorage.getItem('theme')) {
+					setTheme(e.matches ? 'dark' : 'light');
+				}
+			});
+
+			// Expose theme functions globally
+			window.setTheme = setTheme;
+
+			// Intersection Observer for section visibility
+			document.addEventListener('DOMContentLoaded', function() {
+				const sections = document.querySelectorAll('[data-section]');
+				const navButtons = document.querySelectorAll('[data-nav-button]');
+
+				const observer = new IntersectionObserver((entries) => {
+					entries.forEach((entry) => {
+						if (entry.isIntersecting) {
+							// Add fade-in animation
+							entry.target.classList.add('animate-fade-in-up');
+
+							// Update active navigation
+							const sectionId = entry.target.getAttribute('data-section');
+							navButtons.forEach(button => {
+								const buttonSection = button.getAttribute('data-nav-button');
+								if (buttonSection === sectionId) {
+									button.classList.remove('bg-muted-foreground/30', 'hover:bg-muted-foreground/60');
+									button.classList.add('bg-foreground');
+								} else {
+									button.classList.remove('bg-foreground');
+									button.classList.add('bg-muted-foreground/30', 'hover:bg-muted-foreground/60');
+								}
+							});
+						}
+					});
+				}, {
+					threshold: 0.3,
+					rootMargin: '0px 0px -20% 0px'
+				});
+
+				sections.forEach((section) => {
+					observer.observe(section);
+				});
+			});
+		</script>
+	</body>
+</html>

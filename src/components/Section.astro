@@ -1,0 +1,25 @@
+---
+export interface Props {
+	id: string;
+	class?: string;
+	containerClass?: string;
+}
+
+const {
+	id,
+	class: className = "",
+	containerClass = "max-w-4xl mx-auto px-6 sm:px-8 lg:px-16"
+} = Astro.props;
+
+const sectionClasses = `opacity-0 ${className}`;
+---
+
+<section
+	id={id}
+	data-section={id}
+	class={sectionClasses}
+>
+	<div class={containerClass}>
+		<slot />
+	</div>
+</section>
