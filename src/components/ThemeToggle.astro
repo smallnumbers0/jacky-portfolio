@@ -52,13 +52,10 @@ const { class: className = "" } = Astro.props;
 		}
 
 		function toggleTheme() {
-			const isDark = document.documentElement.classList.contains('dark');
-
-			if (window.setTheme) {
-				window.setTheme(isDark ? 'light' : 'dark');
+			if (window.toggleTheme) {
+				window.toggleTheme();
+				updateIcons();
 			}
-
-			updateIcons();
 		}
 
 		// Initialize icons based on current theme

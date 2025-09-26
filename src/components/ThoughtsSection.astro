@@ -8,6 +8,7 @@ export interface Props {
     excerpt: string;
     date: string;
     readTime: string;
+    slug: string;
   }>;
 }
 
@@ -52,6 +53,7 @@ const {
         excerpt={post.excerpt}
         date={post.date}
         readTime={post.readTime}
+        slug={post.slug}
       />
     ))}
   </div>

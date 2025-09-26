@@ -6,37 +6,36 @@ import WorkSection from '../components/WorkSection.astro';
 import ThoughtsSection from '../components/ThoughtsSection.astro';
 import ConnectSection from '../components/ConnectSection.astro';
 import Footer from '../components/Footer.astro';
+import { getEntry, getCollection } from 'astro:content';
 
-const workData = [
-	{
-		year: "2023",
-		role: "Senior Frontend Engineer",
-		company: "Vercel",
-		description: "Leading frontend architecture for developer tools and AI-powered features.",
-		tech: ["React", "TypeScript", "Next.js"],
-	},
-	{
-		year: "2022",
-		role: "Frontend Engineer",
-		company: "Linear",
-		description: "Built performant interfaces for project management and team collaboration.",
-		tech: ["React", "GraphQL", "Framer Motion"],
-	},
-	{
-		year: "2021",
-		role: "Full Stack Developer",
-		company: "Stripe",
-		description: "Developed payment infrastructure and merchant-facing dashboard features.",
-		tech: ["Ruby", "React", "PostgreSQL"],
-	},
-	{
-		year: "2019",
-		role: "Software Engineer",
-		company: "Airbnb",
-		description: "Created booking flow optimizations and host management tools.",
-		tech: ["React", "Node.js", "MySQL"],
-	},
-];
+// Get portfolio content from markdown file
+const portfolioEntry = await getEntry('portfolio', 'main');
+const portfolio = portfolioEntry.data;
+
+// Get blog posts for Recent Thoughts section
+const allBlogPosts = await getCollection('blog');
+const publishedPosts = allBlogPosts
+  .filter(post => post.data.published)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 4); // Get latest 4 posts
+
+// Transform blog posts for ThoughtsSection component
+const recentThoughts = publishedPosts.map(post => ({
+  title: post.data.title,
+  excerpt: post.data.excerpt,
+  date: post.data.date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
+  readTime: post.data.readTime,
+  slug: post.slug,
+}));
+
+// Transform work experience data to match component expectations
+const workData = portfolio.workExperience.map(work => ({
+	year: work.year,
+	role: work.role,
+	company: work.company,
+	description: work.description,
+	tech: work.technologies, // Map technologies to tech for component compatibility
+}));
 ---
 
 <Layout title="Portfolio Template">
@@ -45,53 +44,60 @@ const workData = [
 		<main class="max-w-4xl mx-auto px-6 sm:px-8 lg:px-16">
 			<header
 				id="intro"
+				data-section="intro"
 				class="min-h-screen flex items-center opacity-0"
 			>
 				<Hero
-					portfolioYear="2025"
-					firstName="Felix"
-					lastName="Macaspac"
-					description="Frontend Developer crafting digital experiences at the intersection of design, technology, and user experience."
-					location="Philippines"
-					skills={["HubL", "React", "TypeScript", "HubSpot CMS", "Node.js"]}
-					currentRole="Frontend Developer"
-					currentCompany="Hububble"
-					currentDuration="2021 — Present"
+					portfolioYear={portfolio.portfolioYear}
+					firstName={portfolio.firstName}
+					lastName={portfolio.lastName}
+					description={portfolio.description}
+					location={portfolio.location}
+					skills={portfolio.skills}
+					currentRole={portfolio.currentRole.title}
+					currentCompany={portfolio.currentRole.company}
+					currentDuration={portfolio.currentRole.duration}
 				/>
 			</header>
 
 			<section
 				id="work"
+				data-section="work"
 				class="min-h-screen py-20 sm:py-32 opacity-0"
 			>
-				<WorkSection jobs={workData} />
+				<WorkSection
+					title={portfolio.workSection.title}
+					dateRange={portfolio.workSection.dateRange}
+					jobs={workData}
+				/>
 			</section>
 
 			<section
 				id="thoughts"
+				data-section="thoughts"
 				class="min-h-screen py-20 sm:py-32 opacity-0"
 			>
-				<ThoughtsSection />
+				<ThoughtsSection posts={recentThoughts} />
 			</section>
 
 			<section
 				id="connect"
+				data-section="connect"
 				class="py-20 sm:py-32 opacity-0"
 			>
 				<ConnectSection
-					title="Let's Connect"
-					description="Always interested in new opportunities, collaborations, and conversations about technology and design."
-					email="test@example.com"
-					socialLinks={[
-						{ name: "GitHub", handle: "@felixmacaspac", url: "#" },
-						{ name: "v0.dev", handle: "@felixmacaspac", url: "#" },
-						{ name: "HubSpot Community", handle: "@felixmacaspac", url: "#" },
-						{ name: "LinkedIn", handle: "felixmacaspac", url: "#" },
-					]}
+					title={portfolio.connectTitle}
+					description={portfolio.connectDescription}
+					email={portfolio.email}
+					socialLinks={portfolio.socialLinks}
 				/>
 			</section>
 
-			<Footer />
+			<Footer
+				copyright={portfolio.footer.copyright}
+				attribution={portfolio.footer.attribution}
+				year={portfolio.footer.year}
+			/>
 		</main>
 
 		<div class="fixed bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background via-background/80 to-transparent pointer-events-none"></div>

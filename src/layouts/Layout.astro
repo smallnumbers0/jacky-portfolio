@@ -20,43 +20,70 @@ const { title = "Portfolio Template" } = Astro.props;
 	<body class="font-sans antialiased">
 		<slot />
 		<script>
-			// Theme switching functionality
-			function setTheme(theme) {
-				if (theme === 'dark') {
-					document.documentElement.classList.add('dark');
-					localStorage.setItem('theme', 'dark');
-				} else {
-					document.documentElement.classList.remove('dark');
-					localStorage.setItem('theme', 'light');
-				}
-			}
-
-			// Initialize theme on page load
-			function initTheme() {
+			// Simple theme system that respects OS preference by default
+			(function() {
+				// Check for saved theme preference or default to system preference
 				const savedTheme = localStorage.getItem('theme');
-				const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
 				if (savedTheme) {
-					setTheme(savedTheme);
-				} else if (prefersDark) {
-					setTheme('dark');
+					// Use saved preference
+					if (savedTheme === 'dark') {
+						document.documentElement.classList.add('dark');
+					}
+					console.log(`🎨 Theme: Using saved preference (${savedTheme})`);
 				} else {
-					setTheme('light');
+					// Default to system preference
+					if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+						document.documentElement.classList.add('dark');
+						console.log('🎨 Theme: Using system preference (dark)');
+					} else {
+						console.log('🎨 Theme: Using system preference (light)');
+					}
+				}
+			})();
+
+			// Theme toggle functionality
+			function toggleTheme() {
+				const isDark = document.documentElement.classList.contains('dark');
+
+				if (isDark) {
+					document.documentElement.classList.remove('dark');
+					localStorage.setItem('theme', 'light');
+					console.log('🎨 Theme: Switched to light mode');
+				} else {
+					document.documentElement.classList.add('dark');
+					localStorage.setItem('theme', 'dark');
+					console.log('🎨 Theme: Switched to dark mode');
 				}
 			}
 
-			// Run on initial load
-			initTheme();
+			// Reset to system preference
+			function resetToSystemTheme() {
+				localStorage.removeItem('theme');
+				document.documentElement.classList.remove('dark');
 
-			// Listen for system theme changes
+				if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+					document.documentElement.classList.add('dark');
+				}
+				console.log('🎨 Theme: Reset to system preference');
+				location.reload(); // Refresh to update theme toggle icons
+			}
+
+			// Listen for system theme changes (only when no manual preference is set)
 			window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
 				if (!localStorage.getItem('theme')) {
-					setTheme(e.matches ? 'dark' : 'light');
+					if (e.matches) {
+						document.documentElement.classList.add('dark');
+					} else {
+						document.documentElement.classList.remove('dark');
+					}
+					console.log(`🎨 Theme: System changed to ${e.matches ? 'dark' : 'light'} mode`);
 				}
 			});
 
-			// Expose theme functions globally
-			window.setTheme = setTheme;
+			// Expose functions globally
+			window.toggleTheme = toggleTheme;
+			window.resetToSystemTheme = resetToSystemTheme;
 
 			// Animation and scroll functionality
 			document.addEventListener('DOMContentLoaded', function() {

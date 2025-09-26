@@ -1,0 +1,175 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const blogPosts = await getCollection('blog');
+  return blogPosts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+// Format the date for display
+const formattedDate = post.data.date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+---
+
+<Layout title={post.data.title}>
+  <div class="min-h-screen bg-background text-foreground">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+      <div class="max-w-4xl mx-auto px-6 sm:px-8 lg:px-16">
+        <div class="flex items-center justify-between h-16">
+          <a
+            href="/"
+            class="text-sm font-mono text-muted-foreground hover:text-foreground transition-colors duration-300"
+          >
+            ← Back to Portfolio
+          </a>
+
+          <div class="text-sm font-mono text-muted-foreground">
+            BLOG
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Blog Post Content -->
+    <main class="max-w-4xl mx-auto px-6 sm:px-8 lg:px-16 pt-24 pb-16">
+      <!-- Post Header -->
+      <header class="space-y-6 mb-12">
+        <!-- Back link for mobile -->
+        <div class="block sm:hidden">
+          <a
+            href="/"
+            class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors duration-300"
+          >
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to Portfolio
+          </a>
+        </div>
+
+        <!-- Post metadata -->
+        <div class="space-y-4">
+          <div class="flex flex-wrap items-center gap-4 text-sm text-muted-foreground font-mono">
+            <time datetime={post.data.date.toISOString()}>
+              {formattedDate}
+            </time>
+            <span>•</span>
+            <span>{post.data.readTime}</span>
+            {post.data.tags && post.data.tags.length > 0 && (
+              <>
+                <span>•</span>
+                <div class="flex flex-wrap gap-2">
+                  {post.data.tags.map((tag) => (
+                    <span class="px-2 py-1 text-xs bg-muted/50 rounded-md">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+
+          <!-- Title -->
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-light tracking-tight">
+            {post.data.title}
+          </h1>
+
+          <!-- Excerpt -->
+          <p class="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-3xl">
+            {post.data.excerpt}
+          </p>
+        </div>
+      </header>
+
+      <!-- Article Content -->
+      <article class="prose prose-lg prose-slate dark:prose-invert max-w-none">
+        <Content />
+      </article>
+
+      <!-- Footer -->
+      <footer class="mt-16 pt-8 border-t border-border">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+          <a
+            href="/"
+            class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors duration-300"
+          >
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to Portfolio
+          </a>
+
+          <div class="text-sm text-muted-foreground">
+            Published on {formattedDate}
+          </div>
+        </div>
+      </footer>
+    </main>
+  </div>
+</Layout>
+
+<style>
+  /* Custom prose styles to match design system */
+  .prose {
+    @apply text-foreground;
+  }
+
+  .prose h1 {
+    @apply text-3xl sm:text-4xl font-light tracking-tight text-foreground mb-6;
+  }
+
+  .prose h2 {
+    @apply text-2xl sm:text-3xl font-light tracking-tight text-foreground mt-12 mb-6;
+  }
+
+  .prose h3 {
+    @apply text-xl sm:text-2xl font-light tracking-tight text-foreground mt-8 mb-4;
+  }
+
+  .prose p {
+    @apply text-foreground leading-relaxed mb-6;
+  }
+
+  .prose ul, .prose ol {
+    @apply text-foreground mb-6;
+  }
+
+  .prose li {
+    @apply mb-2;
+  }
+
+  .prose strong {
+    @apply text-foreground font-semibold;
+  }
+
+  .prose code {
+    @apply text-sm bg-muted px-2 py-1 rounded text-foreground;
+  }
+
+  .prose pre {
+    @apply bg-muted p-4 rounded-lg overflow-x-auto mb-6;
+  }
+
+  .prose pre code {
+    @apply bg-transparent p-0;
+  }
+
+  .prose blockquote {
+    @apply border-l-4 border-border pl-6 italic text-muted-foreground mb-6;
+  }
+
+  .prose a {
+    @apply text-foreground hover:text-muted-foreground transition-colors duration-300 underline;
+  }
+</style>

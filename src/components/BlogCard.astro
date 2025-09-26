@@ -4,13 +4,15 @@ export interface Props {
   excerpt: string;
   date: string;
   readTime: string;
+  slug: string;
 }
 
-const { title, excerpt, date, readTime } = Astro.props;
+const { title, excerpt, date, readTime, slug } = Astro.props;
 ---
 
-<article
-  class="group p-6 sm:p-8 border border-border rounded-lg hover:border-muted-foreground/50 transition-all duration-500 hover:shadow-lg cursor-pointer"
+<a
+  href={`/blog/${slug}`}
+  class="group block p-6 sm:p-8 border border-border rounded-lg hover:border-muted-foreground/50 transition-all duration-500 hover:shadow-lg"
 >
   <div class="space-y-4">
     <div class="flex items-center justify-between text-xs text-muted-foreground font-mono">
@@ -41,4 +43,4 @@ const { title, excerpt, date, readTime } = Astro.props;
       </svg>
     </div>
   </div>
-</article>
+</a>
