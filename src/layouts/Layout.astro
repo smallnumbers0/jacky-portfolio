@@ -57,6 +57,49 @@ const { title = "Portfolio Template" } = Astro.props;
 
 			// Expose theme functions globally
 			window.setTheme = setTheme;
+
+			// Animation and scroll functionality
+			document.addEventListener('DOMContentLoaded', function() {
+				// Smooth scrolling for the entire document
+				document.documentElement.style.scrollBehavior = 'smooth';
+
+				// Set up Intersection Observer for animations
+				const observer = new IntersectionObserver(
+					(entries) => {
+						entries.forEach((entry) => {
+							if (entry.isIntersecting) {
+								entry.target.classList.add('animate-fade-in-up');
+								// Track active section for navigation
+								if (entry.target.id) {
+									window.activeSection = entry.target.id;
+									// Dispatch custom event for navigation updates
+									window.dispatchEvent(new CustomEvent('activeSectionChange', {
+										detail: { sectionId: entry.target.id }
+									}));
+								}
+							}
+						});
+					},
+					{ threshold: 0.3, rootMargin: '0px 0px -20% 0px' }
+				);
+
+				// Observe all sections
+				const sections = document.querySelectorAll('section, [data-section]');
+				sections.forEach((section) => {
+					if (section) observer.observe(section);
+				});
+
+				// Smooth scroll to section function
+				window.scrollToSection = function(sectionId) {
+					const element = document.getElementById(sectionId);
+					if (element) {
+						element.scrollIntoView({ behavior: 'smooth' });
+					}
+				};
+
+				// Initialize active section
+				window.activeSection = null;
+			});
 		</script>
 	</body>
 </html>
