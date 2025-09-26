@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
+import ConnectSection from '../components/ConnectSection.astro';
 ---
 
 <Layout title="Portfolio Template">
@@ -16,6 +17,17 @@ import Hero from '../components/Hero.astro';
 				currentRole="Frontend Developer"
 				currentCompany="Hububble"
 				currentDuration="2021 — Present"
+			/>
+			<ConnectSection
+				title="Let's Connect"
+				description="Always interested in new opportunities, collaborations, and conversations about technology and design."
+				email="test@example.com"
+				socialLinks={[
+					{ name: "GitHub", handle: "@felixmacaspac", url: "#" },
+					{ name: "v0.dev", handle: "@felixmacaspac", url: "#" },
+					{ name: "HubSpot Community", handle: "@felixmacaspac", url: "#" },
+					{ name: "LinkedIn", handle: "felixmacaspac", url: "#" },
+				]}
 			/>
 		</div>
 	</main>
