@@ -1,11 +1,63 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Portfolio Template - Tailwind CSS v4 Test">
+	<main class="min-h-screen bg-background text-foreground p-8">
+		<div class="max-w-4xl mx-auto space-y-8">
+			<div class="animate-fade-in-up">
+				<h1 class="text-4xl font-bold text-primary mb-4">Tailwind CSS v4 Design System</h1>
+				<p class="text-muted-foreground text-lg">Testing design tokens and theme switching functionality</p>
+			</div>
+
+			<div class="animate-fade-in-up" style="animation-delay: 200ms;">
+				<button
+					onclick="window.setTheme('light')"
+					class="bg-primary text-primary-foreground px-4 py-2 rounded-lg mr-4 hover:opacity-90 transition-opacity"
+				>
+					Light Theme
+				</button>
+				<button
+					onclick="window.setTheme('dark')"
+					class="bg-secondary text-secondary-foreground px-4 py-2 rounded-lg hover:opacity-90 transition-opacity"
+				>
+					Dark Theme
+				</button>
+			</div>
+
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+				<div class="animate-fade-in-up bg-card text-card-foreground p-6 rounded-lg border border-border" style="animation-delay: 400ms;">
+					<h3 class="font-semibold text-lg mb-2">Card Component</h3>
+					<p class="text-muted-foreground">Testing card background and foreground colors with proper border.</p>
+				</div>
+
+				<div class="animate-fade-in-up bg-muted text-muted-foreground p-6 rounded-lg" style="animation-delay: 600ms;">
+					<h3 class="font-semibold text-lg mb-2 text-foreground">Muted Background</h3>
+					<p>Testing muted background with muted foreground text.</p>
+				</div>
+
+				<div class="animate-fade-in-up bg-accent text-accent-foreground p-6 rounded-lg" style="animation-delay: 800ms;">
+					<h3 class="font-semibold text-lg mb-2">Accent Colors</h3>
+					<p>Testing accent background and foreground colors.</p>
+				</div>
+			</div>
+
+			<div class="animate-fade-in-up space-y-4" style="animation-delay: 1000ms;">
+				<h2 class="text-2xl font-bold">Chart Colors</h2>
+				<div class="flex gap-4">
+					<div class="w-16 h-16 rounded" style="background-color: var(--chart-1);" title="Chart 1"></div>
+					<div class="w-16 h-16 rounded" style="background-color: var(--chart-2);" title="Chart 2"></div>
+					<div class="w-16 h-16 rounded" style="background-color: var(--chart-3);" title="Chart 3"></div>
+					<div class="w-16 h-16 rounded" style="background-color: var(--chart-4);" title="Chart 4"></div>
+					<div class="w-16 h-16 rounded" style="background-color: var(--chart-5);" title="Chart 5"></div>
+				</div>
+			</div>
+
+			<div class="animate-fade-in-up" style="animation-delay: 1200ms;">
+				<button class="bg-destructive text-destructive-foreground px-4 py-2 rounded-lg hover:opacity-90 transition-opacity">
+					Destructive Action
+				</button>
+			</div>
+		</div>
+	</main>
 </Layout>
