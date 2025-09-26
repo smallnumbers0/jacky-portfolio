@@ -1,0 +1,13 @@
+---
+export interface Props {
+  tech: string;
+}
+
+const { tech } = Astro.props;
+---
+
+<span
+  class="px-2 py-1 text-xs text-muted-foreground rounded group-hover:border-muted-foreground/50 transition-colors duration-500"
+>
+  {tech}
+</span>

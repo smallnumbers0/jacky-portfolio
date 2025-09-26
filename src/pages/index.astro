@@ -1,9 +1,41 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
+import WorkSection from '../components/WorkSection.astro';
 import ThoughtsSection from '../components/ThoughtsSection.astro';
 import ConnectSection from '../components/ConnectSection.astro';
 import Footer from '../components/Footer.astro';
+
+const workData = [
+	{
+		year: "2023",
+		role: "Senior Frontend Engineer",
+		company: "Vercel",
+		description: "Leading frontend architecture for developer tools and AI-powered features.",
+		tech: ["React", "TypeScript", "Next.js"],
+	},
+	{
+		year: "2022",
+		role: "Frontend Engineer",
+		company: "Linear",
+		description: "Built performant interfaces for project management and team collaboration.",
+		tech: ["React", "GraphQL", "Framer Motion"],
+	},
+	{
+		year: "2021",
+		role: "Full Stack Developer",
+		company: "Stripe",
+		description: "Developed payment infrastructure and merchant-facing dashboard features.",
+		tech: ["Ruby", "React", "PostgreSQL"],
+	},
+	{
+		year: "2019",
+		role: "Software Engineer",
+		company: "Airbnb",
+		description: "Created booking flow optimizations and host management tools.",
+		tech: ["React", "Node.js", "MySQL"],
+	},
+];
 ---
 
 <Layout title="Portfolio Template">
@@ -20,6 +52,7 @@ import Footer from '../components/Footer.astro';
 				currentCompany="Hububble"
 				currentDuration="2021 — Present"
 			/>
+			<WorkSection jobs={workData} />
 			<ThoughtsSection />
 			<ConnectSection
 				title="Let's Connect"

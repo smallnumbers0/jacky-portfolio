@@ -1,0 +1,47 @@
+---
+import WorkExperience from './WorkExperience.astro';
+
+export interface JobData {
+  year: string;
+  role: string;
+  company: string;
+  description: string;
+  tech: string[];
+}
+
+export interface Props {
+  title?: string;
+  dateRange?: string;
+  jobs: JobData[];
+}
+
+const {
+  title = "Selected Work",
+  dateRange = "2019 — 2025",
+  jobs
+} = Astro.props;
+---
+
+<section
+  id="work"
+  class="min-h-screen py-20 sm:py-32 opacity-0"
+>
+  <div class="space-y-12 sm:space-y-16">
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+      <h2 class="text-3xl sm:text-4xl font-light">{title}</h2>
+      <div class="text-sm text-muted-foreground font-mono">{dateRange}</div>
+    </div>
+
+    <div class="space-y-8 sm:space-y-12">
+      {jobs.map((job) => (
+        <WorkExperience
+          year={job.year}
+          role={job.role}
+          company={job.company}
+          description={job.description}
+          tech={job.tech}
+        />
+      ))}
+    </div>
+  </div>
+</section>
