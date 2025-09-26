@@ -1,0 +1,16 @@
+---
+export interface Props {
+  isAvailable?: boolean;
+  statusText?: string;
+}
+
+const {
+  isAvailable = true,
+  statusText = "Available for work"
+} = Astro.props;
+---
+
+<div class="flex items-center gap-2">
+  <div class={`w-2 h-2 rounded-full ${isAvailable ? 'bg-green-500 animate-pulse' : 'bg-gray-400'}`}></div>
+  {statusText}
+</div>
