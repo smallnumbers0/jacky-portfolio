@@ -26,10 +26,24 @@ const {
 		// Add smooth scrolling behavior to navigation buttons
 		const navButtons = document.querySelectorAll('[data-nav-button]');
 
+		// Update active navigation state
+		function updateActiveNav(activeSection) {
+			navButtons.forEach(button => {
+				const sectionId = button.getAttribute('data-nav-button');
+				if (sectionId === activeSection) {
+					button.classList.remove('bg-muted-foreground/30', 'hover:bg-muted-foreground/60');
+					button.classList.add('bg-foreground');
+				} else {
+					button.classList.remove('bg-foreground');
+					button.classList.add('bg-muted-foreground/30', 'hover:bg-muted-foreground/60');
+				}
+			});
+		}
+
 		navButtons.forEach(button => {
 			button.addEventListener('click', () => {
 				const sectionId = button.getAttribute('data-nav-button');
-				const section = document.querySelector(`[data-section="${sectionId}"]`);
+				const section = document.getElementById(sectionId);
 
 				if (section) {
 					section.scrollIntoView({
@@ -38,6 +52,11 @@ const {
 					});
 				}
 			});
+		});
+
+		// Listen for active section changes
+		window.addEventListener('activeSectionChange', (event) => {
+			updateActiveNav(event.detail.sectionId);
 		});
 	});
 </script>

@@ -26,38 +26,32 @@ const {
 } = Astro.props;
 ---
 
-<section
-  id="connect"
-  data-section="connect"
-  class="py-20 sm:py-32 opacity-0"
->
-  <div class="grid lg:grid-cols-2 gap-12 sm:gap-16">
-    <div class="space-y-6 sm:space-y-8">
-      <h2 class="text-3xl sm:text-4xl font-light">{title}</h2>
+<div class="grid lg:grid-cols-2 gap-12 sm:gap-16">
+  <div class="space-y-6 sm:space-y-8">
+    <h2 class="text-3xl sm:text-4xl font-light">{title}</h2>
 
-      <div class="space-y-6">
-        <p class="text-lg sm:text-xl text-muted-foreground leading-relaxed">
-          {description}
-        </p>
+    <div class="space-y-6">
+      <p class="text-lg sm:text-xl text-muted-foreground leading-relaxed">
+        {description}
+      </p>
 
-        <div class="space-y-4">
-          <ContactEmail email={email} />
-        </div>
-      </div>
-    </div>
-
-    <div class="space-y-6 sm:space-y-8">
-      <div class="text-sm text-muted-foreground font-mono tracking-wider">ELSEWHERE</div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {socialLinks.map((social) => (
-          <SocialLink
-            name={social.name}
-            handle={social.handle}
-            url={social.url}
-          />
-        ))}
+      <div class="space-y-4">
+        <ContactEmail email={email} />
       </div>
     </div>
   </div>
-</section>
+
+  <div class="space-y-6 sm:space-y-8">
+    <div class="text-sm text-muted-foreground font-mono tracking-wider">ELSEWHERE</div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {socialLinks.map((social) => (
+        <SocialLink
+          name={social.name}
+          handle={social.handle}
+          url={social.url}
+        />
+      ))}
+    </div>
+  </div>
+</div>

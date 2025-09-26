@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/Navigation.astro';
 import Hero from '../components/Hero.astro';
 import WorkSection from '../components/WorkSection.astro';
 import ThoughtsSection from '../components/ThoughtsSection.astro';
@@ -39,33 +40,60 @@ const workData = [
 ---
 
 <Layout title="Portfolio Template">
-	<main class="min-h-screen bg-background text-foreground">
-		<div class="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12">
-			<Hero
-				portfolioYear="2025"
-				firstName="Felix"
-				lastName="Macaspac"
-				description="Frontend Developer crafting digital experiences at the intersection of design, technology, and user experience."
-				location="Philippines"
-				skills={["HubL", "React", "TypeScript", "HubSpot CMS", "Node.js"]}
-				currentRole="Frontend Developer"
-				currentCompany="Hububble"
-				currentDuration="2021 — Present"
-			/>
-			<WorkSection jobs={workData} />
-			<ThoughtsSection />
-			<ConnectSection
-				title="Let's Connect"
-				description="Always interested in new opportunities, collaborations, and conversations about technology and design."
-				email="test@example.com"
-				socialLinks={[
-					{ name: "GitHub", handle: "@felixmacaspac", url: "#" },
-					{ name: "v0.dev", handle: "@felixmacaspac", url: "#" },
-					{ name: "HubSpot Community", handle: "@felixmacaspac", url: "#" },
-					{ name: "LinkedIn", handle: "felixmacaspac", url: "#" },
-				]}
-			/>
+	<div class="min-h-screen bg-background text-foreground relative">
+		<Navigation />
+		<main class="max-w-4xl mx-auto px-6 sm:px-8 lg:px-16">
+			<header
+				id="intro"
+				class="min-h-screen flex items-center opacity-0"
+			>
+				<Hero
+					portfolioYear="2025"
+					firstName="Felix"
+					lastName="Macaspac"
+					description="Frontend Developer crafting digital experiences at the intersection of design, technology, and user experience."
+					location="Philippines"
+					skills={["HubL", "React", "TypeScript", "HubSpot CMS", "Node.js"]}
+					currentRole="Frontend Developer"
+					currentCompany="Hububble"
+					currentDuration="2021 — Present"
+				/>
+			</header>
+
+			<section
+				id="work"
+				class="min-h-screen py-20 sm:py-32 opacity-0"
+			>
+				<WorkSection jobs={workData} />
+			</section>
+
+			<section
+				id="thoughts"
+				class="min-h-screen py-20 sm:py-32 opacity-0"
+			>
+				<ThoughtsSection />
+			</section>
+
+			<section
+				id="connect"
+				class="py-20 sm:py-32 opacity-0"
+			>
+				<ConnectSection
+					title="Let's Connect"
+					description="Always interested in new opportunities, collaborations, and conversations about technology and design."
+					email="test@example.com"
+					socialLinks={[
+						{ name: "GitHub", handle: "@felixmacaspac", url: "#" },
+						{ name: "v0.dev", handle: "@felixmacaspac", url: "#" },
+						{ name: "HubSpot Community", handle: "@felixmacaspac", url: "#" },
+						{ name: "LinkedIn", handle: "felixmacaspac", url: "#" },
+					]}
+				/>
+			</section>
+
 			<Footer />
-		</div>
-	</main>
+		</main>
+
+		<div class="fixed bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background via-background/80 to-transparent pointer-events-none"></div>
+	</div>
 </Layout>
