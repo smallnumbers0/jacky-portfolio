@@ -27,19 +27,11 @@ const portfolioCollection = defineCollection({
     // Skills
     skills: z.array(z.string()),
 
-    // Work Experience
+    // Work Section Configuration
     workSection: z.object({
       title: z.string().default("Selected Work"),
       dateRange: z.string().default("2019 — 2025"),
     }),
-    workExperience: z.array(z.object({
-      year: z.string(),
-      role: z.string(),
-      company: z.string(),
-      description: z.string(),
-      technologies: z.array(z.string()),
-      featured: z.boolean().optional(),
-    })),
 
 
     // Social Links
@@ -76,7 +68,25 @@ const blogCollection = defineCollection({
   }),
 });
 
+const workCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    company: z.string(),
+    role: z.string(),
+    year: z.string(),
+    description: z.string(),
+    technologies: z.array(z.string()),
+    featured: z.boolean().default(false),
+    order: z.number().optional(),
+    status: z.string().default("completed"),
+    duration: z.string().optional(),
+    team: z.string().optional(),
+  }),
+});
+
 export const collections = {
   portfolio: portfolioCollection,
   blog: blogCollection,
+  work: workCollection,
 };

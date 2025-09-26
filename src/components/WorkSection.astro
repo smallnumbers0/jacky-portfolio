@@ -7,6 +7,7 @@ export interface JobData {
   company: string;
   description: string;
   tech: string[];
+  slug?: string;
 }
 
 export interface Props {
@@ -36,6 +37,7 @@ const {
         company={job.company}
         description={job.description}
         tech={job.tech}
+        slug={job.slug}
       />
     ))}
   </div>

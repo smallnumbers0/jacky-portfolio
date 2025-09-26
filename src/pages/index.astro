@@ -28,13 +28,20 @@ const recentThoughts = publishedPosts.map(post => ({
   slug: post.slug,
 }));
 
-// Transform work experience data to match component expectations
-const workData = portfolio.workExperience.map(work => ({
-	year: work.year,
-	role: work.role,
-	company: work.company,
-	description: work.description,
-	tech: work.technologies, // Map technologies to tech for component compatibility
+// Get work projects from the new work collection
+const allWorkProjects = await getCollection('work');
+const featuredWork = allWorkProjects
+  .filter(work => work.data.featured)
+  .sort((a, b) => (a.data.order || 999) - (b.data.order || 999));
+
+// Transform work data to match component expectations
+const workData = featuredWork.map(work => ({
+	year: work.data.year,
+	role: work.data.role,
+	company: work.data.company,
+	description: work.data.description,
+	tech: work.data.technologies,
+	slug: work.slug, // Add slug for navigation
 }));
 ---
 

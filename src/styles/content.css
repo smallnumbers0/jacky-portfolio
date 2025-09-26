@@ -1,0 +1,244 @@
+/*
+ * Centralized Content Styling System
+ *
+ * This file contains shared prose styling that can be used across:
+ * - Work project pages
+ * - Blog post pages
+ * - Future project pages
+ * - Any other content pages
+ *
+ * Usage: Apply the "content-prose" class to any content container
+ */
+
+.content-prose {
+  @apply text-muted-foreground;
+  line-height: 1.7;
+}
+
+/* ================================
+   TYPOGRAPHY HIERARCHY
+   ================================ */
+
+/* Main headings with strong visual hierarchy */
+.content-prose h1 {
+  @apply text-4xl font-light text-foreground mt-20 mb-10 first:mt-0
+         border-b border-border/30 pb-6;
+}
+
+.content-prose h2 {
+  @apply text-3xl font-light text-foreground mt-16 mb-8
+         border-b border-border/20 pb-4
+         relative before:absolute before:left-0 before:top-0
+         before:w-12 before:h-0.5 before:bg-foreground;
+}
+
+.content-prose h3 {
+  @apply text-2xl font-medium text-foreground mt-12 mb-6
+         relative pl-6 before:absolute before:left-0 before:top-1.5
+         before:w-3 before:h-3 before:bg-foreground/20 before:rounded-full;
+}
+
+.content-prose h4 {
+  @apply text-xl font-semibold text-foreground mt-10 mb-4
+         bg-muted/30 px-4 py-2 rounded-lg border-l-4 border-foreground/30;
+}
+
+.content-prose h5 {
+  @apply text-lg font-semibold text-foreground mt-8 mb-3
+         uppercase tracking-wide text-sm;
+}
+
+.content-prose h6 {
+  @apply text-base font-semibold text-foreground mt-6 mb-2;
+}
+
+/* ================================
+   TEXT FORMATTING
+   ================================ */
+
+.content-prose p {
+  @apply leading-relaxed mb-6 text-muted-foreground text-base;
+}
+
+.content-prose strong {
+  @apply font-semibold text-foreground bg-muted/20 px-1.5 py-0.5 rounded;
+}
+
+.content-prose em {
+  @apply italic text-foreground/90;
+}
+
+.content-prose a {
+  @apply text-foreground font-medium underline decoration-2 decoration-foreground/30
+         hover:decoration-foreground transition-all duration-300
+         hover:bg-muted/20 px-1 py-0.5 rounded;
+}
+
+/* ================================
+   LISTS
+   ================================ */
+
+.content-prose ul {
+  @apply my-8 space-y-3;
+}
+
+.content-prose ol {
+  @apply my-8 space-y-3;
+}
+
+.content-prose li {
+  @apply text-muted-foreground relative pl-2;
+}
+
+.content-prose ul > li {
+  @apply relative pl-6 before:absolute before:left-1 before:top-2.5
+         before:w-2 before:h-2 before:bg-foreground/60 before:rounded-full;
+}
+
+.content-prose ol > li {
+  @apply relative pl-6;
+}
+
+.content-prose li::marker {
+  @apply text-foreground/60 font-medium;
+}
+
+/* Better spacing for nested lists */
+.content-prose ul ul,
+.content-prose ol ol,
+.content-prose ul ol,
+.content-prose ol ul {
+  @apply mt-3 mb-0;
+}
+
+/* ================================
+   CODE & TECHNICAL CONTENT
+   ================================ */
+
+.content-prose code {
+  @apply bg-muted text-foreground px-2 py-1 rounded-md text-sm font-mono
+         border border-border/50;
+}
+
+.content-prose pre {
+  @apply bg-muted border border-border rounded-xl p-6 overflow-x-auto
+         shadow-sm;
+}
+
+.content-prose pre code {
+  @apply bg-transparent p-0 border-0;
+}
+
+/* ================================
+   QUOTES & CALLOUTS
+   ================================ */
+
+.content-prose blockquote {
+  @apply border-l-4 border-foreground/30 pl-6 py-4 my-8
+         bg-muted/20 rounded-r-lg italic text-muted-foreground/90
+         relative before:absolute before:top-2 before:left-2
+         before:text-4xl before:text-foreground/20 before:content-['"'];
+}
+
+/* ================================
+   DIVIDERS & SPACING
+   ================================ */
+
+.content-prose hr {
+  @apply border-0 h-px bg-gradient-to-r from-transparent via-border to-transparent my-16;
+}
+
+/* ================================
+   TABLES
+   ================================ */
+
+.content-prose table {
+  @apply w-full border-collapse border border-border my-8 rounded-lg overflow-hidden
+         shadow-sm;
+}
+
+.content-prose th {
+  @apply border border-border px-6 py-4 text-left bg-muted font-semibold text-foreground;
+}
+
+.content-prose td {
+  @apply border border-border px-6 py-4 text-muted-foreground;
+}
+
+.content-prose tr:nth-child(even) {
+  @apply bg-muted/20;
+}
+
+/* ================================
+   SPECIAL CONTENT PATTERNS
+   ================================ */
+
+/* Style for definition-like content */
+.content-prose p:has(strong:only-child) {
+  @apply text-lg font-medium text-foreground mt-8 mb-4;
+}
+
+.content-prose p:has(strong) strong:first-child {
+  @apply block text-foreground font-semibold mb-2 text-lg;
+}
+
+/* ================================
+   ACCESSIBILITY
+   ================================ */
+
+.content-prose a:focus {
+  @apply outline-2 outline-foreground/50 outline-offset-2;
+}
+
+/* ================================
+   RESPONSIVE ADJUSTMENTS
+   ================================ */
+
+@media (max-width: 768px) {
+  .content-prose h1 {
+    @apply text-3xl;
+  }
+
+  .content-prose h2 {
+    @apply text-2xl;
+  }
+
+  .content-prose h3 {
+    @apply text-xl;
+  }
+
+  .content-prose h4 {
+    @apply text-lg px-3 py-1.5;
+  }
+}
+
+/* ================================
+   THEME VARIANTS (for future use)
+   ================================ */
+
+/* Blog-specific styling overrides */
+.content-prose.blog-content h2 {
+  @apply text-2xl mt-12 mb-6;
+}
+
+.content-prose.blog-content h3 {
+  @apply text-xl mt-8 mb-4;
+}
+
+/* Project-specific styling overrides */
+.content-prose.project-content h4 {
+  @apply bg-blue-50 dark:bg-blue-950/20 border-l-blue-500;
+}
+
+/* Compact variant for shorter content */
+.content-prose.compact h1 {
+  @apply mt-12 mb-6;
+}
+
+.content-prose.compact h2 {
+  @apply mt-10 mb-5;
+}
+
+.content-prose.compact p {
+  @apply mb-4;
+}

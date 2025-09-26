@@ -1,0 +1,33 @@
+---
+import ContentLayout from '../../components/ContentLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const workEntries = await getCollection('work');
+  return workEntries.map(entry => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<ContentLayout
+  title={entry.data.title}
+  type="work"
+  meta={{
+    role: entry.data.role,
+    company: entry.data.company,
+    year: entry.data.year,
+    duration: entry.data.duration,
+    technologies: entry.data.technologies
+  }}
+  backLink={{
+    href: "/#work",
+    label: "Back to Selected Work"
+  }}
+>
+  <Content />
+</ContentLayout>
