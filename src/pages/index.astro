@@ -1,8 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Navigation from '../components/Navigation.astro';
 import Hero from '../components/Hero.astro';
+import Navigation from '../components/Navigation.astro';
 import WorkSection from '../components/WorkSection.astro';
+import FeaturedProjects from '../components/FeaturedProjects.astro';
 import ThoughtsSection from '../components/ThoughtsSection.astro';
 import ConnectSection from '../components/ConnectSection.astro';
 import Footer from '../components/Footer.astro';
@@ -66,6 +67,14 @@ const workData = featuredWork.map(work => ({
 					currentDuration={portfolio.currentRole.duration}
 				/>
 			</header>
+
+			<section
+				id="projects"
+				data-section="projects"
+				class="min-h-screen py-20 sm:py-32 opacity-0"
+			>
+				<FeaturedProjects />
+			</section>
 
 			<section
 				id="work"

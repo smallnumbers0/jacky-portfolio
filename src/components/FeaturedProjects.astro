@@ -1,0 +1,23 @@
+---
+import { getCollection } from "astro:content";
+import ProjectCard from "./ProjectCard.astro";
+
+const projects = await getCollection("project");
+const featuredProjects = projects.filter((p) => p.data.featured);
+---
+
+<div class="space-y-12 sm:space-y-16">
+  <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+    <h2 class="text-3xl sm:text-4xl font-light">Featured Projects</h2>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    {featuredProjects.map((project) => (
+      <ProjectCard project={project} />
+    ))}
+  </div>
+
+  <div class="text-center mt-12">
+    <a href="/projects" class="btn btn-secondary">View all projects</a>
+  </div>
+</div>

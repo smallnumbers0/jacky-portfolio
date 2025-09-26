@@ -1,0 +1,48 @@
+---
+import { getCollection } from "astro:content";
+
+const projects = await getCollection("project");
+const categories = [...new Set(projects.map((p) => p.data.category))];
+const techs = [...new Set(projects.flatMap((p) => p.data.tech))];
+---
+
+<div class="bg-muted/50 p-6 rounded-lg">
+  <h3 class="text-lg font-medium">Filters</h3>
+  <div class="mt-4 space-y-4">
+    <div>
+      <label for="search" class="block text-sm font-medium text-muted-foreground">Search</label>
+      <input type="text" id="search" name="search" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md" placeholder="Search by title, one-liner, or tags">
+    </div>
+    <div>
+      <label for="category" class="block text-sm font-medium text-muted-foreground">Category</label>
+      <select id="category" name="category" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+        <option value="all">All</option>
+        {categories.map((c) => <option value={c}>{c}</option>)}
+      </select>
+    </div>
+    <div>
+      <label for="tech" class="block text-sm font-medium text-muted-foreground">Tech</label>
+      <select id="tech" name="tech" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+        <option value="all">All</option>
+        {techs.map((t) => <option value={t}>{t}</option>)}
+      </select>
+    </div>
+    <div>
+      <label for="status" class="block text-sm font-medium text-muted-foreground">Status</label>
+      <select id="status" name="status" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+        <option value="all">All</option>
+        <option value="live-baseline">Live Baseline</option>
+        <option value="replay">Replay</option>
+        <option value="snapshot-only">Snapshot</option>
+      </select>
+    </div>
+    <div>
+      <label for="sort" class="block text-sm font-medium text-muted-foreground">Sort by</label>
+      <select id="sort" name="sort" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+        <option value="featured">Featured</option>
+        <option value="date">Date</option>
+        <option value="complexity">Complexity</option>
+      </select>
+    </div>
+  </div>
+</div>

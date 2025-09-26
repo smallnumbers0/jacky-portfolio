@@ -1,0 +1,128 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+
+import FilterPanel from "../../components/FilterPanel.astro";
+
+const projects = await getCollection("project");
+---
+
+<Layout title="Projects">
+  <div class="min-h-screen bg-background text-foreground relative">
+    <main class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16">
+      <header class="py-20 sm:py-32 text-center">
+        <h1 class="text-4xl sm:text-5xl font-bold">Projects</h1>
+        <p class="text-lg sm:text-xl text-muted-foreground mt-4">Selected technical work and prototypes that always run in baseline mode.</p>
+      </header>
+
+      <div class="mb-8">
+        <FilterPanel />
+      </div>
+
+      <div id="empty-state" class="text-center py-16 hidden">
+        <h3 class="text-2xl font-bold">No projects found</h3>
+        <p class="text-muted-foreground mt-2">Try adjusting your filters or clearing them to see all projects.</p>
+        <button id="clear-filters" class="btn btn-primary mt-4">Clear Filters</button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="projects-grid">
+        {projects.map((project) => (
+          <div data-project={JSON.stringify(project)}>
+            <ProjectCard project={project} />
+          </div>
+        ))}
+      </div>
+    </main>
+  </div>
+</Layout>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const categoryFilter = document.getElementById("category");
+    const techFilter = document.getElementById("tech");
+    const statusFilter = document.getElementById("status");
+    const sortFilter = document.getElementById("sort");
+    const searchFilter = document.getElementById("search");
+    const projectsGrid = document.getElementById("projects-grid");
+    const emptyState = document.getElementById("empty-state");
+    const clearFiltersBtn = document.getElementById("clear-filters");
+    let projectCards = Array.from(projectsGrid.children);
+
+    function sortProjects() {
+      const sortBy = sortFilter.value;
+
+      projectCards.sort((a, b) => {
+        const projectA = JSON.parse(a.dataset.project);
+        const projectB = JSON.parse(b.dataset.project);
+
+        if (sortBy === "featured") {
+          return projectB.featured - projectA.featured;
+        } else if (sortBy === "date") {
+          return new Date(projectB.date) - new Date(projectA.date);
+        } else if (sortBy === "complexity") {
+          const complexityOrder = { light: 1, medium: 2, deep: 3 };
+          return complexityOrder[projectB.complexity] - complexityOrder[projectA.complexity];
+        }
+      });
+
+      projectsGrid.innerHTML = "";
+      projectCards.forEach(card => projectsGrid.appendChild(card));
+    }
+
+    function filterProjects() {
+      const category = categoryFilter.value;
+      const tech = techFilter.value;
+      const status = statusFilter.value;
+      const searchQuery = searchFilter.value.toLowerCase();
+      let visibleProjects = 0;
+
+      projectCards.forEach((card) => {
+        const projectData = JSON.parse(card.dataset.project);
+        const categoryMatch = category === "all" || projectData.category === category;
+        const techMatch = tech === "all" || projectData.tech.includes(tech);
+        const statusMatch = status === "all" || projectData.status === status;
+        const searchMatch = searchQuery === "" ||
+                            projectData.title.toLowerCase().includes(searchQuery) ||
+                            projectData.oneLiner.toLowerCase().includes(searchQuery) ||
+                            projectData.tags.some(tag => tag.toLowerCase().includes(searchQuery));
+
+        if (categoryMatch && techMatch && statusMatch && searchMatch) {
+          card.style.display = "block";
+          visibleProjects++;
+        } else {
+          card.style.display = "none";
+        }
+      });
+
+      if (visibleProjects === 0) {
+        emptyState.style.display = "block";
+      } else {
+        emptyState.style.display = "none";
+      }
+    }
+
+    function clearFilters() {
+      categoryFilter.value = "all";
+      techFilter.value = "all";
+      statusFilter.value = "all";
+      searchFilter.value = "";
+      sortFilter.value = "featured";
+      sortProjects();
+      filterProjects();
+    }
+
+    categoryFilter.addEventListener("change", filterProjects);
+    techFilter.addEventListener("change", filterProjects);
+    statusFilter.addEventListener("change", filterProjects);
+    searchFilter.addEventListener("input", filterProjects);
+    clearFiltersBtn.addEventListener("click", clearFilters);
+    sortFilter.addEventListener("change", () => {
+      sortProjects();
+      filterProjects();
+    });
+
+    sortProjects();
+    filterProjects();
+  });
+</script>

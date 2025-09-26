@@ -85,8 +85,75 @@ const workCollection = defineCollection({
   }),
 });
 
+const projectCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    // Identity
+    title: z.string(),
+    oneLiner: z.string().max(120),
+    date: z.coerce.date(),
+    updated: z.coerce.date().optional(),
+
+    // Classification
+    category: z.enum(["web-app", "notebook", "api", "ml", "infra", "tooling", "game", "other"]),
+    tech: z.array(z.string()),
+    tags: z.array(z.string()),
+
+    // Showcase State
+    status: z.enum(["live-baseline", "replay", "snapshot-only"]),
+    featured: z.boolean().default(false),
+    complexity: z.enum(["light", "medium", "deep"]),
+
+    // Demo Access
+    demo: z.object({
+      type: z.enum(["iframe", "static-page", "external-link", "gallery"]),
+      url: z.string().url(),
+      note: z.string().optional(),
+    }),
+    repo: z.object({
+      url: z.string().url(),
+    }),
+    notebook: z.object({
+      url: z.string().url(),
+    }).optional(),
+
+    // Extended Features
+    extended: z.object({
+      features: z.array(z.string()),
+      media: z.array(z.string().url()),
+      architectureDiagram: z.string().url().optional(),
+    }).optional(),
+
+    // Media
+    media: z.object({
+      coverImage: z.object({
+        url: z.string().url(),
+        alt: z.string(),
+      }),
+      gallery: z.array(z.object({
+        url: z.string().url(),
+        caption: z.string(),
+      })),
+    }),
+    badge: z.string().optional(),
+
+    // People & Credit
+    role: z.string(),
+    team: z.array(z.string()).optional(),
+    timeframe: z.string(),
+
+    // Metrics
+    impact: z.array(z.string()).optional(),
+    links: z.array(z.object({
+      name: z.string(),
+      url: z.string().url(),
+    })).optional(),
+  }),
+});
+
 export const collections = {
   portfolio: portfolioCollection,
   blog: blogCollection,
   work: workCollection,
+  project: projectCollection,
 };

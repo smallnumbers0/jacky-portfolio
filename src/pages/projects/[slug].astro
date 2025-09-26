@@ -1,0 +1,128 @@
+--- 
+import { getCollection, getEntry } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import TechTag from "../../components/TechTag.astro";
+import StatusBadge from "../../components/StatusBadge.astro";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("project");
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { data } = project;
+---
+
+<Layout title={data.title}>
+  <div class="min-h-screen bg-background text-foreground relative">
+    <main class="max-w-4xl mx-auto px-6 sm:px-8 lg:px-16">
+      <header class="py-20 sm:py-32">
+        <div class="flex items-center gap-4">
+          <h1 class="text-4xl sm:text-5xl font-bold">{data.title}</h1>
+          {data.badge && <div class="badge">{data.badge}</div>}
+        </div>
+        <p class="text-lg sm:text-xl text-muted-foreground mt-4">{data.oneLiner}</p>
+        <div class="flex items-center gap-4 mt-4">
+          <StatusBadge status={data.status} />
+          <div class="flex flex-wrap gap-2">
+            {data.tech.map((tech) => (
+              <TechTag name={tech} />
+            ))}
+          </div>
+        </div>
+        <div class="mt-4 text-sm text-muted-foreground">
+          <span>{data.role}</span>
+          <span class="mx-2">•</span>
+          <span>{data.timeframe}</span>
+        </div>
+      </header>
+
+      <div class="flex items-center gap-4 my-8">
+        <a href={data.demo.url} class="btn btn-primary">Try the Demo</a>
+        <a href={data.repo.url} class="btn btn-secondary">View Repo</a>
+        {data.notebook && <a href={data.notebook.url} class="btn btn-secondary">View Notebook</a>}
+      </div>
+
+      <section class="py-12">
+        <h2 class="text-2xl font-bold">Overview</h2>
+        <div class="prose mt-4">
+          <p>{project.body}</p>
+        </div>
+      </section>
+
+      <section class="py-12">
+        <h2 class="text-2xl font-bold">Live Demo (Baseline)</h2>
+        <div class="mt-4">
+          {data.demo.type === "iframe" && (
+            <iframe src={data.demo.url} class="w-full h-96 border border-border rounded-lg" title={data.title}></iframe>
+          )}
+          {data.demo.type === "static-page" && (
+            <a href={data.demo.url} target="_blank" rel="noopener noreferrer">View Static Page</a>
+          )}
+          {data.demo.type === "external-link" && (
+            <a href={data.demo.url} target="_blank" rel="noopener noreferrer">View External Link</a>
+          )}
+          {data.demo.note && <p class="text-sm text-muted-foreground mt-2">{data.demo.note}</p>}
+        </div>
+      </section>
+
+      {data.extended?.features && (
+        <section class="py-12">
+          <h2 class="text-2xl font-bold">Highlights</h2>
+          <ul class="list-disc list-inside mt-4">
+            {data.extended.features.map((feature) => (
+              <li>{feature}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {data.extended?.architectureDiagram && (
+        <section class="py-12">
+          <h2 class="text-2xl font-bold">Architecture</h2>
+          <img src={data.extended.architectureDiagram} alt="Architecture Diagram" class="w-full mt-4" />
+        </section>
+      )}
+
+      {data.media.gallery.length > 0 && (
+        <section class="py-12">
+          <h2 class="text-2xl font-bold">Media Gallery</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-4">
+            {data.media.gallery.map((media) => (
+              <div>
+                <img src={media.url} alt={media.caption} class="w-full rounded-lg" />
+                <p class="text-sm text-muted-foreground mt-2">{media.caption}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {data.impact && (
+        <section class="py-12">
+          <h2 class="text-2xl font-bold">Impact & Metrics</h2>
+          <ul class="list-disc list-inside mt-4">
+            {data.impact.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {data.links && (
+        <section class="py-12">
+          <h2 class="text-2xl font-bold">Links</h2>
+          <ul class="list-disc list-inside mt-4">
+            {data.links.map((link) => (
+              <li><a href={link.url} target="_blank" rel="noopener noreferrer">{link.name}</a></li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+    </main>
+  </div>
+</Layout>

@@ -1,0 +1,29 @@
+---
+export interface Props {
+  status: "live-baseline" | "replay" | "snapshot-only";
+}
+
+const { status } = Astro.props;
+
+const statusMap = {
+  "live-baseline": {
+    text: "Live Baseline",
+    color: "bg-green-500",
+  },
+  replay: {
+    text: "Replay",
+    color: "bg-blue-500",
+  },
+  "snapshot-only": {
+    text: "Snapshot",
+    color: "bg-gray-500",
+  },
+};
+
+const { text, color } = statusMap[status];
+---
+
+<div class={`flex items-center gap-2 text-xs font-mono`}>
+  <span class={`w-2 h-2 rounded-full ${color}`}></span>
+  <span>{text}</span>
+</div>
