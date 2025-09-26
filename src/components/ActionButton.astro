@@ -1,0 +1,17 @@
+---
+export interface Props {
+	class?: string;
+	ariaLabel?: string;
+	onClick?: string;
+}
+
+const { class: className = "", ariaLabel, onClick } = Astro.props;
+---
+
+<button
+	class={`group p-3 rounded-lg border border-border hover:border-muted-foreground/50 transition-all duration-300 ${className}`}
+	aria-label={ariaLabel}
+	onclick={onClick}
+>
+	<slot />
+</button>
