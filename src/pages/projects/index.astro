@@ -1,37 +1,107 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
+import Navigation from "../../components/Navigation.astro";
 import ProjectCard from "../../components/ProjectCard.astro";
-
 import FilterPanel from "../../components/FilterPanel.astro";
 
 const projects = await getCollection("project");
+const featuredProjects = projects.filter(p => p.data.featured);
 ---
 
 <Layout title="Projects">
-  <div class="min-h-screen bg-background text-foreground relative">
-    <main class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-16">
-      <header class="py-20 sm:py-32 text-center">
-        <h1 class="text-4xl sm:text-5xl font-bold">Projects</h1>
-        <p class="text-lg sm:text-xl text-muted-foreground mt-4">Selected technical work and prototypes that always run in baseline mode.</p>
+  <div class="min-h-screen bg-background text-foreground">
+    <Navigation />
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+      <!-- Header -->
+      <header class="mb-20 text-center">
+        <div class="space-y-6">
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-light tracking-tight">Projects</h1>
+          <p class="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed font-light">
+            Selected technical work and prototypes that always run in baseline mode. Each project demonstrates different technologies and approaches to solving real-world problems.
+          </p>
+          <div class="flex items-center justify-center gap-4 text-sm text-muted-foreground">
+            <span class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-green-500"></span>
+              Live Baseline
+            </span>
+            <span class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+              Replay Demo
+            </span>
+            <span class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-gray-500"></span>
+              Snapshot
+            </span>
+          </div>
+        </div>
       </header>
 
-      <div class="mb-8">
+      <!-- Featured Projects -->
+      {featuredProjects.length > 0 && (
+        <section class="mb-20">
+          <div class="mb-12">
+            <h2 class="text-2xl sm:text-3xl font-light mb-4">Featured Work</h2>
+            <div class="w-16 h-0.5 bg-foreground/20"></div>
+          </div>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            {featuredProjects.slice(0, 2).map((project) => (
+              <div data-project={JSON.stringify(project.data)} data-slug={project.slug}>
+                <ProjectCard project={project} featured={true} />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <!-- Filters -->
+      <section class="mb-12">
+        <div class="mb-8">
+          <h2 class="text-2xl sm:text-3xl font-light mb-4">All Projects</h2>
+          <div class="w-16 h-0.5 bg-foreground/20"></div>
+        </div>
         <FilterPanel />
+      </section>
+
+      <!-- Empty State -->
+      <div id="empty-state" class="text-center py-20 hidden">
+        <div class="max-w-md mx-auto space-y-4">
+          <div class="w-16 h-16 mx-auto bg-muted rounded-full flex items-center justify-center">
+            <svg class="w-8 h-8 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-medium">No projects found</h3>
+          <p class="text-muted-foreground">
+            Try adjusting your filters or search terms to find what you're looking for.
+          </p>
+          <button
+            id="clear-filters"
+            class="inline-flex items-center gap-2 px-5 py-3 text-sm font-medium rounded-lg bg-foreground text-background hover:bg-foreground/90 transition-all duration-300"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+            </svg>
+            Reset Filters
+          </button>
+        </div>
       </div>
 
-      <div id="empty-state" class="text-center py-16 hidden">
-        <h3 class="text-2xl font-bold">No projects found</h3>
-        <p class="text-muted-foreground mt-2">Try adjusting your filters or clearing them to see all projects.</p>
-        <button id="clear-filters" class="btn btn-primary mt-4">Clear Filters</button>
-      </div>
-
+      <!-- Projects Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="projects-grid">
         {projects.map((project) => (
-          <div data-project={JSON.stringify(project)}>
+          <div data-project={JSON.stringify(project.data)} data-slug={project.slug}>
             <ProjectCard project={project} />
           </div>
         ))}
+      </div>
+
+      <!-- Results Summary -->
+      <div id="results-summary" class="mt-12 text-center">
+        <p class="text-sm text-muted-foreground">
+          Showing <span id="visible-count">{projects.length}</span> of {projects.length} projects
+        </p>
       </div>
     </main>
   </div>
@@ -47,7 +117,11 @@ const projects = await getCollection("project");
     const projectsGrid = document.getElementById("projects-grid");
     const emptyState = document.getElementById("empty-state");
     const clearFiltersBtn = document.getElementById("clear-filters");
+    const visibleCountSpan = document.getElementById("visible-count");
+    const resultsSummary = document.getElementById("results-summary");
+
     let projectCards = Array.from(projectsGrid.children);
+    const totalProjects = projectCards.length;
 
     function sortProjects() {
       const sortBy = sortFilter.value;
@@ -57,71 +131,100 @@ const projects = await getCollection("project");
         const projectB = JSON.parse(b.dataset.project);
 
         if (sortBy === "featured") {
-          return projectB.featured - projectA.featured;
+          // Featured first, then by date
+          const featuredDiff = projectB.featured - projectA.featured;
+          if (featuredDiff !== 0) return featuredDiff;
+          return new Date(projectB.date) - new Date(projectA.date);
         } else if (sortBy === "date") {
           return new Date(projectB.date) - new Date(projectA.date);
         } else if (sortBy === "complexity") {
           const complexityOrder = { light: 1, medium: 2, deep: 3 };
           return complexityOrder[projectB.complexity] - complexityOrder[projectA.complexity];
         }
+        return 0;
       });
 
       projectsGrid.innerHTML = "";
       projectCards.forEach(card => projectsGrid.appendChild(card));
     }
 
-    function filterProjects() {
-      const category = categoryFilter.value;
-      const tech = techFilter.value;
-      const status = statusFilter.value;
-      const searchQuery = searchFilter.value.toLowerCase();
-      let visibleProjects = 0;
+    function updateResultsSummary(visibleCount) {
+      visibleCountSpan.textContent = visibleCount;
 
-      projectCards.forEach((card) => {
-        const projectData = JSON.parse(card.dataset.project);
-        const categoryMatch = category === "all" || projectData.category === category;
-        const techMatch = tech === "all" || projectData.tech.includes(tech);
-        const statusMatch = status === "all" || projectData.status === status;
-        const searchMatch = searchQuery === "" ||
-                            projectData.title.toLowerCase().includes(searchQuery) ||
-                            projectData.oneLiner.toLowerCase().includes(searchQuery) ||
-                            projectData.tags.some(tag => tag.toLowerCase().includes(searchQuery));
-
-        if (categoryMatch && techMatch && statusMatch && searchMatch) {
-          card.style.display = "block";
-          visibleProjects++;
-        } else {
-          card.style.display = "none";
-        }
-      });
-
-      if (visibleProjects === 0) {
+      if (visibleCount === 0) {
+        resultsSummary.style.display = "none";
         emptyState.style.display = "block";
       } else {
+        resultsSummary.style.display = "block";
         emptyState.style.display = "none";
       }
     }
 
+    function filterProjects() {
+      const category = categoryFilter?.value || "all";
+      const tech = techFilter?.value || "all";
+      const statusRadio = document.querySelector('input[name="status"]:checked');
+      const status = statusRadio?.value || "all";
+      const searchQuery = searchFilter?.value.toLowerCase() || "";
+      let visibleProjects = 0;
+
+      projectCards.forEach((card) => {
+        try {
+          const projectData = JSON.parse(card.dataset.project);
+          const categoryMatch = category === "all" || projectData.category === category;
+          const techMatch = tech === "all" || projectData.tech.includes(tech);
+          const statusMatch = status === "all" || projectData.status === status;
+          const searchMatch = searchQuery === "" ||
+                              projectData.title.toLowerCase().includes(searchQuery) ||
+                              projectData.oneLiner.toLowerCase().includes(searchQuery) ||
+                              (projectData.tags && projectData.tags.some(tag => tag.toLowerCase().includes(searchQuery)));
+
+          if (categoryMatch && techMatch && statusMatch && searchMatch) {
+            card.style.display = "block";
+            visibleProjects++;
+          } else {
+            card.style.display = "none";
+          }
+        } catch (error) {
+          console.warn("Error parsing project data:", error);
+          card.style.display = "block";
+          visibleProjects++;
+        }
+      });
+
+      updateResultsSummary(visibleProjects);
+    }
+
     function clearFilters() {
-      categoryFilter.value = "all";
-      techFilter.value = "all";
-      statusFilter.value = "all";
-      searchFilter.value = "";
-      sortFilter.value = "featured";
+      if (categoryFilter) categoryFilter.value = "all";
+      if (techFilter) techFilter.value = "all";
+      if (searchFilter) searchFilter.value = "";
+      if (sortFilter) sortFilter.value = "featured";
+
+      // Reset status radio buttons
+      const allStatusRadio = document.querySelector('input[name="status"][value="all"]');
+      if (allStatusRadio) allStatusRadio.checked = true;
+
       sortProjects();
       filterProjects();
     }
 
-    categoryFilter.addEventListener("change", filterProjects);
-    techFilter.addEventListener("change", filterProjects);
-    statusFilter.addEventListener("change", filterProjects);
-    searchFilter.addEventListener("input", filterProjects);
-    clearFiltersBtn.addEventListener("click", clearFilters);
-    sortFilter.addEventListener("change", () => {
+    // Event listeners
+    categoryFilter?.addEventListener("change", filterProjects);
+    techFilter?.addEventListener("change", filterProjects);
+    searchFilter?.addEventListener("input", filterProjects);
+    clearFiltersBtn?.addEventListener("click", clearFilters);
+    sortFilter?.addEventListener("change", () => {
       sortProjects();
       filterProjects();
     });
 
+    // Status radio button listeners
+    document.querySelectorAll('input[name="status"]').forEach(radio => {
+      radio.addEventListener('change', filterProjects);
+    });
+
+    // Initialize
     sortProjects();
     filterProjects();
   });

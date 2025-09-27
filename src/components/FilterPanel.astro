@@ -3,46 +3,199 @@ import { getCollection } from "astro:content";
 
 const projects = await getCollection("project");
 const categories = [...new Set(projects.map((p) => p.data.category))];
-const techs = [...new Set(projects.flatMap((p) => p.data.tech))];
+const techs = [...new Set(projects.flatMap((p) => p.data.tech))].sort();
+
+// Format category names for display
+const formatCategory = (category: string) =>
+  category.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
 ---
 
-<div class="bg-muted/50 p-6 rounded-lg">
-  <h3 class="text-lg font-medium">Filters</h3>
-  <div class="mt-4 space-y-4">
-    <div>
-      <label for="search" class="block text-sm font-medium text-muted-foreground">Search</label>
-      <input type="text" id="search" name="search" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md" placeholder="Search by title, one-liner, or tags">
+<div class="bg-muted/30 border border-border/50 rounded-lg p-6">
+  <div class="mb-6">
+    <h3 class="text-lg font-medium text-foreground mb-2">Filter & Search</h3>
+    <p class="text-sm text-muted-foreground">
+      Refine your view to find specific types of projects
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+    <!-- Search -->
+    <div class="lg:col-span-2">
+      <label for="search" class="block text-sm font-medium text-foreground mb-2">
+        Search Projects
+      </label>
+      <div class="relative">
+        <input
+          type="text"
+          id="search"
+          name="search"
+          class="w-full pl-10 pr-4 py-3 text-sm bg-background border border-border rounded-lg focus:ring-2 focus:ring-foreground/20 focus:border-foreground transition-colors"
+          placeholder="Search titles, descriptions, or tags..."
+        />
+        <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+      </div>
     </div>
+
+    <!-- Category -->
     <div>
-      <label for="category" class="block text-sm font-medium text-muted-foreground">Category</label>
-      <select id="category" name="category" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-        <option value="all">All</option>
-        {categories.map((c) => <option value={c}>{c}</option>)}
+      <label for="category" class="block text-sm font-medium text-foreground mb-2">
+        Category
+      </label>
+      <select
+        id="category"
+        name="category"
+        class="w-full px-3 py-3 text-sm bg-background border border-border rounded-lg focus:ring-2 focus:ring-foreground/20 focus:border-foreground transition-colors"
+      >
+        <option value="all">All Categories</option>
+        {categories.map((c) => (
+          <option value={c}>{formatCategory(c)}</option>
+        ))}
       </select>
     </div>
+
+    <!-- Technology -->
     <div>
-      <label for="tech" class="block text-sm font-medium text-muted-foreground">Tech</label>
-      <select id="tech" name="tech" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-        <option value="all">All</option>
-        {techs.map((t) => <option value={t}>{t}</option>)}
+      <label for="tech" class="block text-sm font-medium text-foreground mb-2">
+        Technology
+      </label>
+      <select
+        id="tech"
+        name="tech"
+        class="w-full px-3 py-3 text-sm bg-background border border-border rounded-lg focus:ring-2 focus:ring-foreground/20 focus:border-foreground transition-colors"
+      >
+        <option value="all">All Technologies</option>
+        {techs.map((t) => (
+          <option value={t}>{t}</option>
+        ))}
       </select>
     </div>
+
+    <!-- Sort -->
     <div>
-      <label for="status" class="block text-sm font-medium text-muted-foreground">Status</label>
-      <select id="status" name="status" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-        <option value="all">All</option>
-        <option value="live-baseline">Live Baseline</option>
-        <option value="replay">Replay</option>
-        <option value="snapshot-only">Snapshot</option>
-      </select>
-    </div>
-    <div>
-      <label for="sort" class="block text-sm font-medium text-muted-foreground">Sort by</label>
-      <select id="sort" name="sort" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-        <option value="featured">Featured</option>
-        <option value="date">Date</option>
+      <label for="sort" class="block text-sm font-medium text-foreground mb-2">
+        Sort By
+      </label>
+      <select
+        id="sort"
+        name="sort"
+        class="w-full px-3 py-3 text-sm bg-background border border-border rounded-lg focus:ring-2 focus:ring-foreground/20 focus:border-foreground transition-colors"
+      >
+        <option value="featured">Featured First</option>
+        <option value="date">Most Recent</option>
         <option value="complexity">Complexity</option>
       </select>
     </div>
   </div>
+
+  <!-- Status Filter Row -->
+  <div class="mt-6 pt-6 border-t border-border/50">
+    <label class="block text-sm font-medium text-foreground mb-3">
+      Project Status
+    </label>
+    <div class="flex flex-wrap gap-3">
+      <label class="flex items-center">
+        <input
+          type="radio"
+          name="status"
+          id="status"
+          value="all"
+          checked
+          class="sr-only"
+        />
+        <span class="status-pill cursor-pointer px-4 py-2 text-sm font-medium rounded-full border transition-all">
+          All Projects
+        </span>
+      </label>
+      <label class="flex items-center">
+        <input
+          type="radio"
+          name="status"
+          value="live-baseline"
+          class="sr-only"
+        />
+        <span class="status-pill cursor-pointer px-4 py-2 text-sm font-medium rounded-full border transition-all flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-green-500"></span>
+          Live Baseline
+        </span>
+      </label>
+      <label class="flex items-center">
+        <input
+          type="radio"
+          name="status"
+          value="replay"
+          class="sr-only"
+        />
+        <span class="status-pill cursor-pointer px-4 py-2 text-sm font-medium rounded-full border transition-all flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+          Replay Demo
+        </span>
+      </label>
+      <label class="flex items-center">
+        <input
+          type="radio"
+          name="status"
+          value="snapshot-only"
+          class="sr-only"
+        />
+        <span class="status-pill cursor-pointer px-4 py-2 text-sm font-medium rounded-full border transition-all flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-gray-500"></span>
+          Snapshot Only
+        </span>
+      </label>
+    </div>
+  </div>
 </div>
+
+<style>
+  .status-pill {
+    border-color: hsl(var(--border));
+    color: hsl(var(--muted-foreground));
+    background-color: hsl(var(--background));
+  }
+
+  input:checked + .status-pill {
+    border-color: hsl(var(--foreground));
+    color: hsl(var(--foreground));
+    background-color: hsl(var(--muted) / 0.5);
+  }
+
+  .status-pill:hover {
+    border-color: hsl(var(--foreground) / 0.5);
+    color: hsl(var(--foreground));
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // Handle status filter radio buttons
+    const statusRadios = document.querySelectorAll('input[name="status"]');
+    const statusElement = { value: 'all' }; // Mock for compatibility
+
+    // Create a virtual status element for the existing filter logic
+    Object.defineProperty(window, 'statusFilter', {
+      get() { return statusElement; }
+    });
+
+    statusRadios.forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        if (e.target.checked) {
+          statusElement.value = e.target.value;
+          // Trigger the filter function if it exists
+          if (typeof window.filterProjects === 'function') {
+            window.filterProjects();
+          }
+          // Also dispatch a change event for compatibility
+          document.getElementById('status')?.dispatchEvent(new Event('change'));
+        }
+      });
+    });
+
+    // Make sure the first option (All) is selected by default
+    const firstRadio = document.querySelector('input[name="status"][value="all"]');
+    if (firstRadio) {
+      firstRadio.checked = true;
+    }
+  });
+</script>

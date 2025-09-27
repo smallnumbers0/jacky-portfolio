@@ -1,128 +1,315 @@
---- 
-import { getCollection, getEntry } from "astro:content";
-import Layout from "../../layouts/Layout.astro";
+---
+import ContentLayout from '../../components/ContentLayout.astro';
+import { getCollection } from 'astro:content';
 import TechTag from "../../components/TechTag.astro";
 import StatusBadge from "../../components/StatusBadge.astro";
 
 export async function getStaticPaths() {
-  const projects = await getCollection("project");
-  return projects.map((project) => ({
+  const projects = await getCollection('project');
+  return projects.map(project => ({
     params: { slug: project.slug },
     props: { project },
   }));
 }
 
 const { project } = Astro.props;
+const { Content } = await project.render();
 const { data } = project;
+
+// Get all projects to enable next/prev navigation within same category
+const allProjects = await getCollection('project');
+const sameCategory = allProjects.filter(p => p.data.category === data.category);
+const currentIndex = sameCategory.findIndex(p => p.slug === project.slug);
+const prevProject = currentIndex > 0 ? sameCategory[currentIndex - 1] : null;
+const nextProject = currentIndex < sameCategory.length - 1 ? sameCategory[currentIndex + 1] : null;
+
+// Create action buttons for demo and repo
+const nextActions = [
+  {
+    href: data.demo.url,
+    label: "Try the Demo",
+    primary: true
+  },
+  {
+    href: data.repo.url,
+    label: "View Repository"
+  }
+];
+
+if (data.notebook) {
+  nextActions.push({
+    href: data.notebook.url,
+    label: "View Notebook"
+  });
+}
 ---
 
-<Layout title={data.title}>
-  <div class="min-h-screen bg-background text-foreground relative">
-    <main class="max-w-4xl mx-auto px-6 sm:px-8 lg:px-16">
-      <header class="py-20 sm:py-32">
-        <div class="flex items-center gap-4">
-          <h1 class="text-4xl sm:text-5xl font-bold">{data.title}</h1>
-          {data.badge && <div class="badge">{data.badge}</div>}
-        </div>
-        <p class="text-lg sm:text-xl text-muted-foreground mt-4">{data.oneLiner}</p>
-        <div class="flex items-center gap-4 mt-4">
+<ContentLayout
+  title={data.title}
+  type="project"
+  meta={{
+    status: data.status,
+    category: data.category,
+    technologies: data.tech
+  }}
+  backLink={{
+    href: "/projects",
+    label: "Back to Projects"
+  }}
+  nextActions={nextActions}
+>
+  <!-- Hero section with project meta -->
+  <div class="mb-16 p-8 bg-muted/30 rounded-lg border border-border/50">
+    <div class="flex items-start justify-between mb-6">
+      <div class="flex-1">
+        <p class="text-xl text-muted-foreground leading-relaxed mb-4">{data.oneLiner}</p>
+        <div class="flex items-center gap-4 mb-4">
           <StatusBadge status={data.status} />
-          <div class="flex flex-wrap gap-2">
-            {data.tech.map((tech) => (
-              <TechTag name={tech} />
-            ))}
-          </div>
+          {data.badge && (
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-accent text-accent-foreground">
+              {data.badge}
+            </span>
+          )}
         </div>
-        <div class="mt-4 text-sm text-muted-foreground">
-          <span>{data.role}</span>
-          <span class="mx-2">•</span>
+        <div class="flex items-center gap-4 text-sm text-muted-foreground mb-4">
+          <span class="font-medium">{data.role}</span>
+          <span class="text-muted-foreground/60">•</span>
           <span>{data.timeframe}</span>
+          {data.team && data.team.length > 0 && (
+            <>
+              <span class="text-muted-foreground/60">•</span>
+              <span>Team: {data.team.join(', ')}</span>
+            </>
+          )}
         </div>
-      </header>
-
-      <div class="flex items-center gap-4 my-8">
-        <a href={data.demo.url} class="btn btn-primary">Try the Demo</a>
-        <a href={data.repo.url} class="btn btn-secondary">View Repo</a>
-        {data.notebook && <a href={data.notebook.url} class="btn btn-secondary">View Notebook</a>}
       </div>
-
-      <section class="py-12">
-        <h2 class="text-2xl font-bold">Overview</h2>
-        <div class="prose mt-4">
-          <p>{project.body}</p>
+      {data.media.coverImage && (
+        <div class="ml-8 flex-shrink-0">
+          <img
+            src={data.media.coverImage.url}
+            alt={data.media.coverImage.alt}
+            class="w-48 h-32 object-cover rounded-lg border border-border"
+          />
         </div>
-      </section>
-
-      <section class="py-12">
-        <h2 class="text-2xl font-bold">Live Demo (Baseline)</h2>
-        <div class="mt-4">
-          {data.demo.type === "iframe" && (
-            <iframe src={data.demo.url} class="w-full h-96 border border-border rounded-lg" title={data.title}></iframe>
-          )}
-          {data.demo.type === "static-page" && (
-            <a href={data.demo.url} target="_blank" rel="noopener noreferrer">View Static Page</a>
-          )}
-          {data.demo.type === "external-link" && (
-            <a href={data.demo.url} target="_blank" rel="noopener noreferrer">View External Link</a>
-          )}
-          {data.demo.note && <p class="text-sm text-muted-foreground mt-2">{data.demo.note}</p>}
-        </div>
-      </section>
-
-      {data.extended?.features && (
-        <section class="py-12">
-          <h2 class="text-2xl font-bold">Highlights</h2>
-          <ul class="list-disc list-inside mt-4">
-            {data.extended.features.map((feature) => (
-              <li>{feature}</li>
-            ))}
-          </ul>
-        </section>
       )}
-
-      {data.extended?.architectureDiagram && (
-        <section class="py-12">
-          <h2 class="text-2xl font-bold">Architecture</h2>
-          <img src={data.extended.architectureDiagram} alt="Architecture Diagram" class="w-full mt-4" />
-        </section>
-      )}
-
-      {data.media.gallery.length > 0 && (
-        <section class="py-12">
-          <h2 class="text-2xl font-bold">Media Gallery</h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-4">
-            {data.media.gallery.map((media) => (
-              <div>
-                <img src={media.url} alt={media.caption} class="w-full rounded-lg" />
-                <p class="text-sm text-muted-foreground mt-2">{media.caption}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {data.impact && (
-        <section class="py-12">
-          <h2 class="text-2xl font-bold">Impact & Metrics</h2>
-          <ul class="list-disc list-inside mt-4">
-            {data.impact.map((item) => (
-              <li>{item}</li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      {data.links && (
-        <section class="py-12">
-          <h2 class="text-2xl font-bold">Links</h2>
-          <ul class="list-disc list-inside mt-4">
-            {data.links.map((link) => (
-              <li><a href={link.url} target="_blank" rel="noopener noreferrer">{link.name}</a></li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-    </main>
+    </div>
   </div>
-</Layout>
+
+  <!-- Main content sections -->
+  <Content />
+
+  <!-- Live Demo Section -->
+  {data.demo && (
+    <section class="mb-16">
+      <h2>Live Demo (Baseline)</h2>
+      <div class="mt-4">
+        {data.demo.type === "iframe" && (
+          <div class="border border-border rounded-lg overflow-hidden">
+            <iframe
+              src={data.demo.url}
+              class="w-full h-96 border-0"
+              title={`${data.title} Demo`}
+              loading="lazy"
+            ></iframe>
+          </div>
+        )}
+        {data.demo.type === "static-page" && (
+          <div class="p-6 border border-border rounded-lg bg-muted/30">
+            <p class="mb-4">This project includes a static demo page showcasing the core functionality.</p>
+            <a
+              href={data.demo.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 text-foreground font-medium hover:underline"
+            >
+              View Static Demo
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+              </svg>
+            </a>
+          </div>
+        )}
+        {data.demo.type === "external-link" && (
+          <div class="p-6 border border-border rounded-lg bg-muted/30">
+            <p class="mb-4">This project is hosted externally and available for live interaction.</p>
+            <a
+              href={data.demo.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 text-foreground font-medium hover:underline"
+            >
+              Open Live Demo
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+              </svg>
+            </a>
+          </div>
+        )}
+        {data.demo.type === "gallery" && (
+          <div class="p-6 border border-border rounded-lg bg-muted/30">
+            <p class="mb-4">This project is demonstrated through a gallery of screenshots and examples.</p>
+            <a
+              href={data.demo.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 text-foreground font-medium hover:underline"
+            >
+              View Gallery
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+            </a>
+          </div>
+        )}
+        {data.demo.note && (
+          <p class="text-sm text-muted-foreground mt-3 p-3 bg-muted/50 rounded border-l-4 border-muted-foreground/30">
+            <strong>Note:</strong> {data.demo.note}
+          </p>
+        )}
+      </div>
+    </section>
+  )}
+
+  <!-- Highlights Section -->
+  {data.extended?.features && data.extended.features.length > 0 && (
+    <section class="mb-16">
+      <h2>Key Highlights</h2>
+      <div class="mt-4 grid gap-4">
+        {data.extended.features.map((feature) => (
+          <div class="flex items-start gap-3 p-4 border border-border rounded-lg bg-muted/20">
+            <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            <p class="text-foreground">{feature}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <!-- Architecture Section -->
+  {data.extended?.architectureDiagram && (
+    <section class="mb-16">
+      <h2>Architecture</h2>
+      <div class="mt-4">
+        <img
+          src={data.extended.architectureDiagram}
+          alt="System Architecture Diagram"
+          class="w-full rounded-lg border border-border shadow-sm"
+        />
+      </div>
+    </section>
+  )}
+
+  <!-- Extended Features Section -->
+  {data.extended?.media && data.extended.media.length > 0 && (
+    <section class="mb-16">
+      <h2>Extended Features (Archived)</h2>
+      <p class="text-muted-foreground mb-6">
+        These features were part of the full implementation during development but are not required for the baseline experience.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {data.extended.media.map((mediaUrl, index) => (
+          <div class="border border-border rounded-lg overflow-hidden">
+            <img
+              src={mediaUrl}
+              alt={`Extended feature ${index + 1}`}
+              class="w-full h-48 object-cover"
+            />
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <!-- Media Gallery Section -->
+  {data.media.gallery && data.media.gallery.length > 0 && (
+    <section class="mb-16">
+      <h2>Media Gallery</h2>
+      <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-8">
+        {data.media.gallery.map((media) => (
+          <div class="space-y-3">
+            <img
+              src={media.url}
+              alt={media.caption}
+              class="w-full rounded-lg border border-border shadow-sm"
+            />
+            <p class="text-sm text-muted-foreground leading-relaxed">{media.caption}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <!-- Impact & Metrics Section -->
+  {data.impact && data.impact.length > 0 && (
+    <section class="mb-16">
+      <h2>Impact & Metrics</h2>
+      <div class="mt-4 grid gap-4">
+        {data.impact.map((item) => (
+          <div class="flex items-start gap-3 p-4 border border-border rounded-lg bg-muted/20">
+            <svg class="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            <p class="text-foreground">{item}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <!-- Links Section -->
+  {data.links && data.links.length > 0 && (
+    <section class="mb-16">
+      <h2>Additional Resources</h2>
+      <div class="mt-4 grid gap-3">
+        {data.links.map((link) => (
+          <a
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center justify-between p-4 border border-border rounded-lg hover:border-muted-foreground/50 transition-colors group"
+          >
+            <span class="font-medium group-hover:text-muted-foreground transition-colors">{link.name}</span>
+            <svg class="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+            </svg>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <!-- Project Navigation -->
+  {(prevProject || nextProject) && (
+    <section class="mb-16 pt-8 border-t border-border/50">
+      <h3 class="text-lg font-medium mb-6">More {data.category} Projects</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {prevProject && (
+          <a href={`/projects/${prevProject.slug}`} class="group block p-6 border border-border rounded-lg hover:border-muted-foreground/50 transition-all">
+            <div class="flex items-center gap-2 text-sm text-muted-foreground mb-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+              </svg>
+              Previous Project
+            </div>
+            <h4 class="font-medium group-hover:text-muted-foreground transition-colors">{prevProject.data.title}</h4>
+            <p class="text-sm text-muted-foreground mt-1">{prevProject.data.oneLiner}</p>
+          </a>
+        )}
+        {nextProject && (
+          <a href={`/projects/${nextProject.slug}`} class="group block p-6 border border-border rounded-lg hover:border-muted-foreground/50 transition-all">
+            <div class="flex items-center justify-end gap-2 text-sm text-muted-foreground mb-2">
+              Next Project
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </div>
+            <h4 class="font-medium group-hover:text-muted-foreground transition-colors text-right">{nextProject.data.title}</h4>
+            <p class="text-sm text-muted-foreground mt-1 text-right">{nextProject.data.oneLiner}</p>
+          </a>
+        )}
+      </div>
+    </section>
+  )}
+</ContentLayout>
