@@ -29,43 +29,9 @@ const {
 		</div>
 
 		<script>
-			// Theme switching functionality
-			function setTheme(theme) {
-				if (theme === 'dark') {
-					document.documentElement.classList.add('dark');
-					localStorage.setItem('theme', 'dark');
-				} else {
-					document.documentElement.classList.remove('dark');
-					localStorage.setItem('theme', 'light');
-				}
-			}
+			import { themeManager } from '../scripts/theme/theme-manager';
 
-			// Initialize theme on page load
-			function initTheme() {
-				const savedTheme = localStorage.getItem('theme');
-				const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-				if (savedTheme) {
-					setTheme(savedTheme);
-				} else if (prefersDark) {
-					setTheme('dark');
-				} else {
-					setTheme('light');
-				}
-			}
-
-			// Run on initial load
-			initTheme();
-
-			// Listen for system theme changes
-			window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-				if (!localStorage.getItem('theme')) {
-					setTheme(e.matches ? 'dark' : 'light');
-				}
-			});
-
-			// Expose theme functions globally
-			window.setTheme = setTheme;
+			// Theme is automatically initialized by the ThemeManager
 
 			// Intersection Observer for section visibility
 			document.addEventListener('DOMContentLoaded', function() {
