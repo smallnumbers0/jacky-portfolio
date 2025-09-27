@@ -17,6 +17,14 @@ const { title = "Portfolio Template" } = Astro.props;
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+		<script is:inline>
+			// Prevent FOUC by applying theme immediately (runs before bundling)
+			if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+				document.documentElement.classList.add('dark');
+			} else {
+				document.documentElement.classList.remove('dark');
+			}
+		</script>
 	</head>
 	<body class="font-sans antialiased">
 		<ThemeProvider />

@@ -3,7 +3,7 @@ export default {
   content: [
     './src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'
   ],
-  darkMode: 'selector', // Use class-based dark mode with system preference fallback
+  darkMode: 'selector', // Use class-based dark mode with manual toggle
   theme: {
     extend: {
       spacing: {

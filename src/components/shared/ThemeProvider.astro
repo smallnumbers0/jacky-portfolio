@@ -1,18 +1,4 @@
 ---
-export interface Props {
-  enableSystemPreference?: boolean;
-  defaultTheme?: 'light' | 'dark';
-}
-
-const {
-  enableSystemPreference = true,
-  defaultTheme = 'light'
-} = Astro.props;
+// ThemeProvider is no longer needed with Tailwind's media strategy
+// Dark mode now works automatically based on system preferences
 ---
-
-<script>
-  import { themeManager } from '../../utils/theme-manager';
-
-  // Theme is automatically initialized by the ThemeManager
-  // The themeManager handles system preference detection and localStorage persistence
-</script>
