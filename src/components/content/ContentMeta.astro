@@ -1,5 +1,5 @@
 ---
-import TechTag from '../TechTag.astro';
+import Tag from '../shared/Tag.astro';
 
 export interface WorkMeta {
   role?: string;
@@ -100,7 +100,7 @@ const formatDate = (date: Date) => {
 {(type === 'work' || type === 'project') && 'technologies' in meta && meta.technologies && (
   <div class="flex flex-wrap gap-2 pt-2">
     {meta.technologies.map((tech) => (
-      <TechTag tech={tech} />
+      <Tag text={tech} variant="tech" />
     ))}
   </div>
 )}
@@ -109,9 +109,7 @@ const formatDate = (date: Date) => {
 {type === 'blog' && 'tags' in meta && meta.tags && (
   <div class="flex flex-wrap gap-2 pt-2">
     {meta.tags.map((tag) => (
-      <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-muted text-muted-foreground">
-        {tag}
-      </span>
+      <Tag text={tag} variant="blog" />
     ))}
   </div>
 )}

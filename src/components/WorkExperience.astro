@@ -1,5 +1,5 @@
 ---
-import TechTag from './TechTag.astro';
+import Tag from './shared/Tag.astro';
 
 export interface Props {
   year: string;
@@ -34,7 +34,7 @@ const { year, role, company, description, tech, slug } = Astro.props;
 
       <div class="lg:col-span-4 flex flex-wrap gap-2 lg:justify-end mt-2 lg:mt-0">
         {tech.map((technology) => (
-          <TechTag tech={technology} />
+          <Tag text={technology} variant="tech" />
         ))}
       </div>
     </div>
@@ -59,7 +59,7 @@ const { year, role, company, description, tech, slug } = Astro.props;
 
     <div class="lg:col-span-4 flex flex-wrap gap-2 lg:justify-end mt-2 lg:mt-0">
       {tech.map((technology) => (
-        <TechTag tech={technology} />
+        <Tag text={technology} variant="tech" />
       ))}
     </div>
   </div>
