@@ -77,7 +77,7 @@ const categoryDisplay = category.replace('-', ' ').replace(/\b\w/g, l => l.toUpp
     <!-- Tech tags -->
     <div class="flex flex-wrap gap-2 mt-6">
       {tech.slice(0, featured ? 4 : 3).map((t) => (
-        <TechTag name={t} />
+        <TechTag tech={t} />
       ))}
       {tech.length > (featured ? 4 : 3) && (
         <span class="text-xs text-muted-foreground px-2 py-1 bg-muted/50 rounded-md">
