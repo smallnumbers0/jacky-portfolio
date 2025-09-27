@@ -15,7 +15,7 @@ repo:
   url: "https://github.com/smallnumbers0/run-report"
 media:
   coverImage:
-    url: "https://via.placeholder.com/150"
+    url: "/run-report-background.png"
     alt: "Run Report"
   gallery: []
 role: "Creator"

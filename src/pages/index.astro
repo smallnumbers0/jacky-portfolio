@@ -11,6 +11,9 @@ import { getEntry, getCollection } from 'astro:content';
 
 // Get portfolio content from markdown file
 const portfolioEntry = await getEntry('portfolio', 'main');
+if (!portfolioEntry) {
+  throw new Error('Portfolio data not found. Make sure src/content/portfolio/main.md exists.');
+}
 const portfolio = portfolioEntry.data;
 
 // Get blog posts for Recent Thoughts section
@@ -46,7 +49,7 @@ const workData = featuredWork.map(work => ({
 }));
 ---
 
-<Layout title="Portfolio Template">
+<Layout title="Jacky Choi">
 	<div class="min-h-screen bg-background text-foreground relative">
 		<Navigation />
 		<main class="content-container">
@@ -62,9 +65,9 @@ const workData = featuredWork.map(work => ({
 					description={portfolio.description}
 					location={portfolio.location}
 					skills={portfolio.skills}
-					currentRole={portfolio.currentRole.title}
-					currentCompany={portfolio.currentRole.company}
-					currentDuration={portfolio.currentRole.duration}
+					currentRole={portfolio.currentRole?.title}
+					currentCompany={portfolio.currentRole?.company}
+					currentDuration={portfolio.currentRole?.duration}
 				/>
 			</header>
 
@@ -76,7 +79,7 @@ const workData = featuredWork.map(work => ({
 				<FeaturedProjects />
 			</section>
 
-			<section
+			<!-- <section
 				id="work"
 				data-section="work"
 				class="section-spacing opacity-0"
@@ -86,7 +89,7 @@ const workData = featuredWork.map(work => ({
 					dateRange={portfolio.workSection.dateRange}
 					jobs={workData}
 				/>
-			</section>
+			</section> -->
 
 			<section
 				id="thoughts"

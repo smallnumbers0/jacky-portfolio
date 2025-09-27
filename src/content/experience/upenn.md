@@ -5,7 +5,7 @@ company: "University of Pennsylvania"
 description: "Pursuing a degree in Data Science, focusing on machine learning, data analysis, and statistical modeling."
 technologies: ["Python", "R", "SQL"]
 featured: true
-duration: "2023 — Present"
+duration: "2024 — Present"
 team: "Data Science Program"
 order: 1
 ---

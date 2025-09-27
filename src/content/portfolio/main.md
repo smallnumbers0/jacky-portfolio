@@ -5,8 +5,8 @@ firstName: "Jacky"
 lastName: "Choi"
 title: "Data Scientist"
 description: "Data Scientist with a passion for finding insights in data and building data-driven solutions. Experienced in machine learning, data analysis, and statistical modeling."
-location: "Philadelphia, PA"
-email: "your@email.com"
+location: "San Francisco, CA"
+email: "jchoi1459@gmail.com"
 portfolioYear: "2025"
 
 # Availability
@@ -15,22 +15,22 @@ availabilityText: "Available for work"
 
 # Current Role
 currentRole:
-  title: "Student"
+  title: "MSE DS Student"
   company: "University of Pennsylvania"
-  duration: "2023 — Present"
+  duration: "2024 — Present"
 
 # Skills
 skills:
-  - "React"
-  - "TypeScript"
-  - "Astro"
-  - "Tailwind CSS"
-  - "Node.js"
+  - "AI Engineering"
+  - "Python"
+  - "Data Analytics"
+  - "Machine Learning"
+  - "Web Dev"
 
 # Work Section
 workSection:
-  title: "Selected Work"
-  dateRange: "2019 — 2025"
+  title: "Work Experience"
+  dateRange: "2021 — 2025"
 
 
 # Social Links
@@ -39,14 +39,14 @@ socialLinks:
     handle: "@smallnumbers0"
     url: "https://github.com/smallnumbers0"
   - name: "LinkedIn"
-    handle: "yourname"
-    url: "https://linkedin.com/in/yourname"
-  - name: "Twitter"
-    handle: "@yourusername"
-    url: "https://twitter.com/yourusername"
-  - name: "Email"
-    handle: "your@email.com"
-    url: "mailto:your@email.com"
+    handle: "jackykchoi"
+    url: "https://www.linkedin.com/in/jackykchoi/"
+  # - name: "Twitter"
+  #   handle: "@yourusername"
+  #   url: "https://twitter.com/yourusername"
+  # - name: "Email"
+  #   handle: "jchoi1459@gmail.com"
+  #   url: "mailto:jchoi1459@gmail.com"
 
 # Connect Section
 connectTitle: "Let's Connect"
@@ -55,7 +55,7 @@ connectDescription: "Always interested in new opportunities, collaborations, and
 # Footer
 footer:
   copyright: "Jacky Choi. All rights reserved."
-  attribution: "Built with Astro and love"
+  attribution: ""
   year: "2025"
 ---
 

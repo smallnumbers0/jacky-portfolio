@@ -26,7 +26,7 @@ lastName: "Name"
 title: "Your Job Title"
 description: "Your description here..."
 location: "Your Location"
-email: "your@email.com"
+email: "jchoi1459@gmail.com"
 portfolioYear: "2025"
 ```
 

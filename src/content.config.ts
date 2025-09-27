@@ -87,11 +87,11 @@ const projectSchema = z.object({
   }).optional(),
   media: z.object({
     coverImage: z.object({
-      url: z.string().url(),
+      url: z.string(),
       alt: z.string(),
     }),
     gallery: z.array(z.object({
-      url: z.string().url(),
+      url: z.string(),
       caption: z.string(),
     })),
   }),

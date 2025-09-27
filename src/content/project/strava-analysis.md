@@ -17,7 +17,7 @@ notebook:
   url: "https://github.com/smallnumbers0/strava-acc/blob/main/strava_activities.ipynb"
 media:
   coverImage:
-    url: "https://via.placeholder.com/150"
+    url: "/strava-analysis.png"
     alt: "Strava Analysis"
   gallery: []
 role: "Data Analyst"
