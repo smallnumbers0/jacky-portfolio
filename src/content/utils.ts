@@ -16,16 +16,23 @@ export async function getFeaturedContent<T extends ContentCollection>(
 ): Promise<CollectionEntry<T>[]> {
   const entries = await getCollection(collection);
   return entries
-    .filter(entry => entry.data.featured === true)
+    .filter(entry => {
+      // Use type assertion since we know certain collections have featured property
+      const data = entry.data as any;
+      return data.featured === true;
+    })
     .sort((a, b) => {
+      const aData = a.data as any;
+      const bData = b.data as any;
+
       // Sort by date if available, otherwise by order or alphabetically
-      if ('date' in a.data && 'date' in b.data) {
-        return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+      if (aData.date && bData.date) {
+        return new Date(bData.date).getTime() - new Date(aData.date).getTime();
       }
-      if ('order' in a.data && 'order' in b.data) {
-        return (a.data.order as number) - (b.data.order as number);
+      if (aData.order && bData.order) {
+        return aData.order - bData.order;
       }
-      return a.data.title?.localeCompare(b.data.title) || 0;
+      return aData.title?.localeCompare(bData.title) || 0;
     });
 }
 
@@ -38,11 +45,14 @@ export async function getPublishedContent<T extends ContentCollection>(
   const entries = await getCollection(collection);
   return entries
     .filter(entry => {
-      return entry.data.published !== false && entry.data.status !== 'draft';
+      const data = entry.data as any;
+      return data.published !== false && data.status !== 'draft';
     })
     .sort((a, b) => {
-      if ('date' in a.data && 'date' in b.data) {
-        return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+      const aData = a.data as any;
+      const bData = b.data as any;
+      if (aData.date && bData.date) {
+        return new Date(bData.date).getTime() - new Date(aData.date).getTime();
       }
       return 0;
     });
@@ -55,7 +65,8 @@ export function groupByCategory<T extends CollectionEntry<any>>(
   entries: T[]
 ): Record<string, T[]> {
   return entries.reduce((acc, entry) => {
-    const category = entry.data.category || 'uncategorized';
+    const data = (entry as any).data;
+    const category = data.category || 'uncategorized';
     acc[category] = acc[category] || [];
     acc[category].push(entry);
     return acc;
@@ -70,7 +81,12 @@ export function filterByTags<T extends CollectionEntry<any>>(
   tags: string[]
 ): T[] {
   return entries.filter(entry => {
-    const entryTags = entry.data.tags || entry.data.technologies || [];
+    const data = (entry as any).data;
+    const entryTags = [
+      ...(data.tags || []),
+      ...(data.technologies || []),
+      ...(data.tech || [])
+    ];
     return tags.some(tag => entryTags.includes(tag));
   });
 }
@@ -129,10 +145,12 @@ export async function getRecentBlogPosts(limit = 5): Promise<CollectionEntry<'bl
  */
 export async function getProjectsByComplexity(): Promise<Record<string, CollectionEntry<'project'>[]>> {
   const projects = await getCollection('project');
-  return groupByCategory(projects.map(p => ({
-    ...p,
-    data: { ...p.data, category: p.data.complexity }
-  })));
+  return projects.reduce((acc, project) => {
+    const complexity = project.data.complexity;
+    acc[complexity] = acc[complexity] || [];
+    acc[complexity].push(project);
+    return acc;
+  }, {} as Record<string, CollectionEntry<'project'>[]>);
 }
 
 /**
@@ -147,14 +165,19 @@ export async function searchContent(
   for (const collection of collections) {
     const entries = await getCollection(collection);
     const matches = entries.filter(entry => {
-      const searchText = [
-        entry.data.title,
-        entry.data.description,
-        entry.data.excerpt,
-        ...(entry.data.tags || []),
-        ...(entry.data.technologies || [])
-      ].join(' ').toLowerCase();
+      const data = entry.data as any;
+      const searchFields = [
+        data.title || '',
+        data.description || '',
+        data.excerpt || '',
+        data.oneLiner || '',
+        data.name || '',
+        ...(data.tags || []),
+        ...(data.technologies || []),
+        ...(data.tech || [])
+      ].filter(Boolean); // Remove empty strings
 
+      const searchText = searchFields.join(' ').toLowerCase();
       return searchText.includes(query.toLowerCase());
     });
     results.push(...matches);
