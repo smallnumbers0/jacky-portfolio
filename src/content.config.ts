@@ -6,7 +6,7 @@ import {
   workProjectSchema,
   blogSchema,
   projectSchema
-} from './content/schemas';
+} from './content/_schemas';
 
 // Profile collection (replacing profile.ts)
 const profileCollection = defineCollection({

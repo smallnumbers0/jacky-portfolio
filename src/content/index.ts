@@ -9,7 +9,7 @@
 export * from './utils';
 
 // Re-export schema types
-export * from './schemas';
+export * from './_schemas';
 
 // Legacy exports (deprecated - use content collections directly)
 // These are kept for backwards compatibility during migration
