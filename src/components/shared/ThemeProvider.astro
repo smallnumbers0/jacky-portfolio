@@ -1,0 +1,18 @@
+---
+export interface Props {
+  enableSystemPreference?: boolean;
+  defaultTheme?: 'light' | 'dark';
+}
+
+const {
+  enableSystemPreference = true,
+  defaultTheme = 'light'
+} = Astro.props;
+---
+
+<script>
+  import { themeManager } from '../../utils/theme-manager';
+
+  // Theme is automatically initialized by the ThemeManager
+  // The themeManager handles system preference detection and localStorage persistence
+</script>

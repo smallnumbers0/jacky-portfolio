@@ -1,5 +1,6 @@
 ---
 import '../styles/globals.css';
+import ThemeProvider from '../components/shared/ThemeProvider.astro';
 
 export interface Props {
 	title?: string;
@@ -18,12 +19,9 @@ const { title = "Portfolio Template" } = Astro.props;
 		<title>{title}</title>
 	</head>
 	<body class="font-sans antialiased">
+		<ThemeProvider />
 		<slot />
 		<script>
-			import { themeManager } from '../scripts/theme/theme-manager';
-
-			// Theme is automatically initialized by the ThemeManager
-
 			// Animation and scroll functionality
 			document.addEventListener('DOMContentLoaded', function() {
 				// Smooth scrolling for the entire document
