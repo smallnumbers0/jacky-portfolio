@@ -10,5 +10,29 @@ export default defineConfig({
         plugins: [tailwindcss()],
       },
     },
+    server: {
+      hmr: {
+        overlay: false
+      }
+    },
+    optimizeDeps: {
+      include: ['tailwindcss']
+    },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ['astro']
+          }
+        }
+      }
+    }
   },
+  server: {
+    port: 4321,
+    host: true
+  },
+  build: {
+    inlineStylesheets: 'auto'
+  }
 });
