@@ -1,6 +1,6 @@
 ---
 import StatusIndicator from './StatusIndicator.astro';
-import SkillTag from './SkillTag.astro';
+import Tag from './shared/Tag.astro';
 import CurrentRole from './CurrentRole.astro';
 
 export interface Props {
@@ -67,7 +67,7 @@ const {
       <div class="text-sm text-muted-foreground font-mono">FOCUS</div>
       <div class="flex flex-wrap gap-2">
         {skills.map((skill) => (
-          <SkillTag skill={skill} />
+          <Tag text={skill} variant="skill" />
         ))}
       </div>
     </div>

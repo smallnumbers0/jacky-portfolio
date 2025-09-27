@@ -1,5 +1,5 @@
 ---
-import TechTag from "./TechTag.astro";
+import Tag from "./shared/Tag.astro";
 import StatusBadge from "./StatusBadge.astro";
 import type { CollectionEntry } from "astro:content";
 
@@ -77,7 +77,7 @@ const categoryDisplay = category.replace('-', ' ').replace(/\b\w/g, l => l.toUpp
     <!-- Tech tags -->
     <div class="flex flex-wrap gap-2 mt-6">
       {tech.slice(0, featured ? 4 : 3).map((t) => (
-        <TechTag tech={t} />
+        <Tag text={t} variant="tech" />
       ))}
       {tech.length > (featured ? 4 : 3) && (
         <span class="text-xs text-muted-foreground px-2 py-1 bg-muted/50 rounded-md">

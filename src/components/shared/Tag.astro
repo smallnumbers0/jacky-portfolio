@@ -1,0 +1,47 @@
+---
+export interface Props {
+  text: string;
+  variant?: 'tech' | 'skill' | 'blog' | 'status';
+  size?: 'sm' | 'md';
+  interactive?: boolean;
+}
+
+const {
+  text,
+  variant = 'tech',
+  size = 'sm',
+  interactive = false
+} = Astro.props;
+
+// Base styles
+const baseStyles = 'text-xs transition-colors';
+
+// Variant-specific styles
+const variantStyles = {
+  tech: 'px-2 py-1 text-muted-foreground rounded group-hover:border-muted-foreground/50 duration-500',
+  skill: 'px-3 py-1 border border-border rounded-full hover:border-muted-foreground/50 duration-300',
+  blog: 'px-2 py-1 bg-muted text-muted-foreground rounded-md hover:bg-muted/80 duration-200',
+  status: 'px-2 py-1 bg-primary/10 text-primary border border-primary/20 rounded-md'
+};
+
+// Size-specific styles
+const sizeStyles = {
+  sm: 'text-xs',
+  md: 'text-sm px-3 py-1.5'
+};
+
+// Interactive styles
+const interactiveStyles = interactive ? 'cursor-pointer hover:scale-105' : '';
+
+// Combine all styles
+const className = [
+  baseStyles,
+  variantStyles[variant],
+  sizeStyles[size],
+  interactiveStyles
+].filter(Boolean).join(' ');
+---
+
+<span class={className}>
+  {text}
+</span>
