@@ -1,0 +1,117 @@
+---
+import TechTag from '../TechTag.astro';
+
+export interface WorkMeta {
+  role?: string;
+  company?: string;
+  year?: string;
+  duration?: string;
+  technologies?: string[];
+}
+
+export interface BlogMeta {
+  date?: Date;
+  readTime?: string;
+  excerpt?: string;
+  tags?: string[];
+}
+
+export interface ProjectMeta {
+  status?: string;
+  category?: string;
+  technologies?: string[];
+}
+
+export interface Props {
+  type: 'work' | 'blog' | 'project';
+  meta: WorkMeta | BlogMeta | ProjectMeta;
+}
+
+const { type, meta } = Astro.props;
+
+// Format date for blog posts
+const formatDate = (date: Date) => {
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+};
+---
+
+<!-- Work Meta -->
+{type === 'work' && 'role' in meta && 'company' in meta && meta.role && meta.company && (
+  <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 text-muted-foreground">
+    <div class="flex items-center gap-3">
+      <span class="font-medium">{meta.role}</span>
+      <span class="text-muted-foreground/60">•</span>
+      <span>{meta.company}</span>
+    </div>
+    <div class="flex items-center gap-3 sm:before:content-['•'] sm:before:text-muted-foreground/60">
+      <span>{meta.year}</span>
+      {meta.duration && (
+        <>
+          <span class="text-muted-foreground/60">•</span>
+          <span>{meta.duration}</span>
+        </>
+      )}
+    </div>
+  </div>
+)}
+
+<!-- Blog Meta -->
+{type === 'blog' && 'date' in meta && meta.date && (
+  <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 text-muted-foreground">
+    <span>{formatDate(meta.date)}</span>
+    {'readTime' in meta && meta.readTime && (
+      <>
+        <span class="hidden sm:inline text-muted-foreground/60">•</span>
+        <span>{meta.readTime}</span>
+      </>
+    )}
+  </div>
+)}
+
+<!-- Project Meta -->
+{type === 'project' && ('status' in meta || 'category' in meta) && (meta.status || meta.category) && (
+  <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 text-muted-foreground">
+    {'status' in meta && meta.status && (
+      <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-muted">
+        {meta.status}
+      </span>
+    )}
+    {'category' in meta && meta.category && (
+      <>
+        <span class="hidden sm:inline text-muted-foreground/60">•</span>
+        <span class="capitalize">{meta.category.replace('-', ' ')}</span>
+      </>
+    )}
+  </div>
+)}
+
+<!-- Excerpt for blog posts -->
+{type === 'blog' && 'excerpt' in meta && meta.excerpt && (
+  <p class="text-lg sm:text-xl text-muted-foreground max-w-3xl leading-relaxed font-light">
+    {meta.excerpt}
+  </p>
+)}
+
+<!-- Technologies for work/projects -->
+{(type === 'work' || type === 'project') && 'technologies' in meta && meta.technologies && (
+  <div class="flex flex-wrap gap-2 pt-2">
+    {meta.technologies.map((tech) => (
+      <TechTag tech={tech} />
+    ))}
+  </div>
+)}
+
+<!-- Tags for blog posts -->
+{type === 'blog' && 'tags' in meta && meta.tags && (
+  <div class="flex flex-wrap gap-2 pt-2">
+    {meta.tags.map((tag) => (
+      <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-muted text-muted-foreground">
+        {tag}
+      </span>
+    ))}
+  </div>
+)}

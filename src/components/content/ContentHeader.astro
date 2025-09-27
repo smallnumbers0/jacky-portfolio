@@ -1,0 +1,25 @@
+---
+export interface Props {
+  title: string;
+  type: 'work' | 'blog' | 'project';
+  backLink: { href: string; label: string };
+}
+
+const { title, type, backLink } = Astro.props;
+---
+
+<header class="mb-20">
+  <div class="mb-8">
+    <a
+      href={backLink.href}
+      class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
+    >
+      ← {backLink.label}
+    </a>
+  </div>
+
+  <div class="space-y-6">
+    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-light tracking-tight">{title}</h1>
+    <slot />
+  </div>
+</header>
