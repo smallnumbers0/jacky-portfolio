@@ -47,9 +47,9 @@ const featuredProjects = projects.filter(p => p.data.featured);
             <h2 class="text-section-title mb-4">Featured Work</h2>
             <div class="section-divider"></div>
           </div>
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12 items-stretch">
             {featuredProjects.slice(0, 2).map((project) => (
-              <div data-project={JSON.stringify(project.data)} data-slug={project.slug}>
+              <div data-project={JSON.stringify(project.data)} data-slug={project.slug} class="flex">
                 <ProjectCard project={project} featured={true} />
               </div>
             ))}
@@ -91,9 +91,9 @@ const featuredProjects = projects.filter(p => p.data.featured);
       </div>
 
       <!-- Projects Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="projects-grid">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch" id="projects-grid">
         {projects.map((project) => (
-          <div data-project={JSON.stringify(project.data)} data-slug={project.slug}>
+          <div data-project={JSON.stringify(project.data)} data-slug={project.slug} class="flex">
             <ProjectCard project={project} />
           </div>
         ))}

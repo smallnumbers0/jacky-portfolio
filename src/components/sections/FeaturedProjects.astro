@@ -11,9 +11,11 @@ const featuredProjects = projects.filter((p) => p.data.featured);
     <h2 class="text-3xl sm:text-4xl font-light">Featured Projects</h2>
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
     {featuredProjects.map((project) => (
-      <ProjectCard project={project} />
+      <div class="flex">
+        <ProjectCard project={project} />
+      </div>
     ))}
   </div>
 
