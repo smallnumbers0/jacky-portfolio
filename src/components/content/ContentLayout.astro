@@ -1,5 +1,6 @@
 ---
 import Navigation from '../layout/Navigation.astro';
+import HeaderNavigation from '../layout/HeaderNavigation.astro';
 import Layout from '../../layouts/Layout.astro';
 import ContentHeader from './ContentHeader.astro';
 import ContentMeta from './ContentMeta.astro';
@@ -39,7 +40,7 @@ const defaultNextActions = {
     { href: '/#connect', label: 'Get in Touch', primary: true }
   ],
   blog: [
-    { href: '/blog', label: 'All Posts' },
+    { href: '/#thoughts', label: 'Back to Thoughts' },
     { href: '/#connect', label: 'Get in Touch', primary: true }
   ],
   project: [
@@ -49,10 +50,18 @@ const defaultNextActions = {
 };
 
 const actions = nextActions.length > 0 ? nextActions : defaultNextActions[type];
+
+// Determine current page context for header navigation
+const pageContext = {
+  work: 'Work Experience',
+  blog: 'Blog Post',
+  project: 'Project Details'
+};
 ---
 
 <Layout title={`${title} | Portfolio`}>
   <div class="min-h-screen bg-background text-foreground">
+    <HeaderNavigation currentPage={pageContext[type]} />
     <Navigation />
 
     <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">

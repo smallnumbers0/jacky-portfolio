@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import Navigation from "../../components/layout/Navigation.astro";
+import HeaderNavigation from "../../components/layout/HeaderNavigation.astro";
 import ProjectCard from "../../components/content/ProjectCard.astro";
 import FilterPanel from "../../components/forms/FilterPanel.astro";
 
@@ -11,6 +12,7 @@ const featuredProjects = projects.filter(p => p.data.featured);
 
 <Layout title="Projects">
   <div class="min-h-screen bg-background text-foreground">
+    <HeaderNavigation currentPage="All Projects" />
     <Navigation />
 
     <main class="content-container-full py-16 sm:py-20">
