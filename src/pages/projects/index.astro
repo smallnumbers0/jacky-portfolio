@@ -1,9 +1,9 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import Navigation from "../../components/Navigation.astro";
-import ProjectCard from "../../components/ProjectCard.astro";
-import FilterPanel from "../../components/FilterPanel.astro";
+import Navigation from "../../components/layout/Navigation.astro";
+import ProjectCard from "../../components/content/ProjectCard.astro";
+import FilterPanel from "../../components/forms/FilterPanel.astro";
 
 const projects = await getCollection("project");
 const featuredProjects = projects.filter(p => p.data.featured);

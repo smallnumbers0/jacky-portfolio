@@ -1,11 +1,11 @@
 ---
-import Navigation from './Navigation.astro';
-import Layout from '../layouts/Layout.astro';
-import ContentHeader from './content/ContentHeader.astro';
-import ContentMeta from './content/ContentMeta.astro';
-import ContentActions from './content/ContentActions.astro';
-import type { WorkMeta, BlogMeta, ProjectMeta } from './content/ContentMeta.astro';
-import '../styles/content-prose.css';
+import Navigation from '../layout/Navigation.astro';
+import Layout from '../../layouts/Layout.astro';
+import ContentHeader from './ContentHeader.astro';
+import ContentMeta from './ContentMeta.astro';
+import ContentActions from './ContentActions.astro';
+import type { WorkMeta, BlogMeta, ProjectMeta } from './ContentMeta.astro';
+import '../../styles/content-prose.css';
 
 export interface Props {
   title: string;
