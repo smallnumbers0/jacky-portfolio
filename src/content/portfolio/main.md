@@ -1,11 +1,11 @@
 ---
 # Personal Information
-name: "Your Name"
-firstName: "Your"
-lastName: "Name"
-title: "Frontend Developer"
-description: "Frontend Developer crafting digital experiences at the intersection of design, technology, and user experience."
-location: "Your Location"
+name: "Jacky Choi"
+firstName: "Jacky"
+lastName: "Choi"
+title: "Data Scientist"
+description: "Data Scientist with a passion for finding insights in data and building data-driven solutions. Experienced in machine learning, data analysis, and statistical modeling."
+location: "Philadelphia, PA"
 email: "your@email.com"
 portfolioYear: "2025"
 
@@ -15,9 +15,9 @@ availabilityText: "Available for work"
 
 # Current Role
 currentRole:
-  title: "Frontend Developer"
-  company: "Your Company"
-  duration: "2021 — Present"
+  title: "Student"
+  company: "University of Pennsylvania"
+  duration: "2023 — Present"
 
 # Skills
 skills:
@@ -36,8 +36,8 @@ workSection:
 # Social Links
 socialLinks:
   - name: "GitHub"
-    handle: "@yourusername"
-    url: "https://github.com/yourusername"
+    handle: "@smallnumbers0"
+    url: "https://github.com/smallnumbers0"
   - name: "LinkedIn"
     handle: "yourname"
     url: "https://linkedin.com/in/yourname"
@@ -54,7 +54,7 @@ connectDescription: "Always interested in new opportunities, collaborations, and
 
 # Footer
 footer:
-  copyright: "Your Name. All rights reserved."
+  copyright: "Jacky Choi. All rights reserved."
   attribution: "Built with Astro and love"
   year: "2025"
 ---
