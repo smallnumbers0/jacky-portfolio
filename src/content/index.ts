@@ -1,21 +1,32 @@
-import type { ContentConfig } from '../types/content'
-import { profile } from './profile'
-import { workExperience } from './work'
-import { blogPosts } from './thoughts'
-import { socialLinks } from './social'
-import { skills } from './skills'
+/**
+ * Content API - Centralized access to all content collections
+ *
+ * This file provides a unified interface for accessing content data
+ * using Astro Content Collections with proper type safety.
+ */
 
-export const contentConfig: ContentConfig = {
-  profile,
-  workExperience,
-  blogPosts,
-  socialLinks,
-  skills
-}
+// Re-export content utilities for easy access
+export * from './utils';
 
-export * from './profile'
-export * from './work'
-export * from './thoughts'
-export * from './social'
-export * from './skills'
-export * from '../types/content'
+// Re-export schema types
+export * from './schemas';
+
+// Legacy exports (deprecated - use content collections directly)
+// These are kept for backwards compatibility during migration
+
+import { getProfile, getSkillsByCategory, getWorkExperience } from './utils';
+
+/**
+ * @deprecated Use getProfile() from content/utils instead
+ */
+export const getProfileData = getProfile;
+
+/**
+ * @deprecated Use getSkillsByCategory() from content/utils instead
+ */
+export const getSkillsData = getSkillsByCategory;
+
+/**
+ * @deprecated Use getWorkExperience() from content/utils instead
+ */
+export const getWorkExperienceData = getWorkExperience;
