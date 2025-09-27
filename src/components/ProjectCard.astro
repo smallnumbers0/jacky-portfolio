@@ -18,7 +18,7 @@ const categoryDisplay = category.replace('-', ' ').replace(/\b\w/g, l => l.toUpp
 
 <a
   href={`/projects/${slug}`}
-  class={`group block border border-border rounded-lg hover:border-muted-foreground/50 transition-all duration-300 hover:shadow-md bg-background overflow-hidden ${
+  class={`group block card-interactive overflow-hidden ${
     featured ? 'lg:col-span-1' : ''
   }`}
 >
@@ -61,14 +61,14 @@ const categoryDisplay = category.replace('-', ' ').replace(/\b\w/g, l => l.toUpp
 
     <!-- Title and description -->
     <div class="space-y-3">
-      <h3 class={`font-medium group-hover:text-muted-foreground transition-colors duration-300 ${
-        featured ? 'text-xl sm:text-2xl' : 'text-lg sm:text-xl'
+      <h3 class={`text-card-title ${
+        featured ? 'text-xl sm:text-2xl' : ''
       }`}>
         {title}
       </h3>
 
-      <p class={`text-muted-foreground leading-relaxed ${
-        featured ? 'text-base' : 'text-sm'
+      <p class={`text-card-description ${
+        featured ? 'text-base' : ''
       }`}>
         {oneLiner}
       </p>
@@ -80,7 +80,7 @@ const categoryDisplay = category.replace('-', ' ').replace(/\b\w/g, l => l.toUpp
         <Tag text={t} variant="tech" />
       ))}
       {tech.length > (featured ? 4 : 3) && (
-        <span class="text-xs text-muted-foreground px-2 py-1 bg-muted/50 rounded-md">
+        <span class="tag-base bg-muted/50 text-muted-foreground">
           +{tech.length - (featured ? 4 : 3)} more
         </span>
       )}

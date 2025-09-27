@@ -3,13 +3,26 @@ export interface Props {
 	class?: string;
 	ariaLabel?: string;
 	onClick?: string;
+	variant?: 'outline' | 'primary' | 'secondary' | 'ghost';
 }
 
-const { class: className = "", ariaLabel, onClick } = Astro.props;
+const {
+	class: className = "",
+	ariaLabel,
+	onClick,
+	variant = 'outline'
+} = Astro.props;
+
+const variantClasses = {
+	outline: 'button-outline p-3',
+	primary: 'button-primary',
+	secondary: 'button-secondary',
+	ghost: 'button-ghost'
+};
 ---
 
 <button
-	class={`group p-3 rounded-lg border border-border hover:border-muted-foreground/50 transition-all duration-300 ${className}`}
+	class={`group ${variantClasses[variant]} ${className}`}
 	aria-label={ariaLabel}
 	onclick={onClick}
 >

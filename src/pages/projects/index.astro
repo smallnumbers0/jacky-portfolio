@@ -13,25 +13,25 @@ const featuredProjects = projects.filter(p => p.data.featured);
   <div class="min-h-screen bg-background text-foreground">
     <Navigation />
 
-    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+    <main class="content-container-full py-16 sm:py-20">
       <!-- Header -->
       <header class="mb-20 text-center">
         <div class="space-y-6">
-          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-light tracking-tight">Projects</h1>
-          <p class="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed font-light">
+          <h1 class="heading-display">Projects</h1>
+          <p class="text-hero-description max-w-3xl mx-auto font-light">
             Selected technical work and prototypes that always run in baseline mode. Each project demonstrates different technologies and approaches to solving real-world problems.
           </p>
           <div class="flex items-center justify-center gap-4 text-sm text-muted-foreground">
             <span class="flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-green-500"></span>
+              <span class="status-dot-success"></span>
               Live Baseline
             </span>
             <span class="flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+              <span class="status-dot-info"></span>
               Replay Demo
             </span>
             <span class="flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-gray-500"></span>
+              <span class="status-dot-neutral"></span>
               Snapshot
             </span>
           </div>
@@ -42,8 +42,8 @@ const featuredProjects = projects.filter(p => p.data.featured);
       {featuredProjects.length > 0 && (
         <section class="mb-20">
           <div class="mb-12">
-            <h2 class="text-2xl sm:text-3xl font-light mb-4">Featured Work</h2>
-            <div class="w-16 h-0.5 bg-foreground/20"></div>
+            <h2 class="text-section-title mb-4">Featured Work</h2>
+            <div class="section-divider"></div>
           </div>
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
             {featuredProjects.slice(0, 2).map((project) => (
@@ -58,8 +58,8 @@ const featuredProjects = projects.filter(p => p.data.featured);
       <!-- Filters -->
       <section class="mb-12">
         <div class="mb-8">
-          <h2 class="text-2xl sm:text-3xl font-light mb-4">All Projects</h2>
-          <div class="w-16 h-0.5 bg-foreground/20"></div>
+          <h2 class="text-section-title mb-4">All Projects</h2>
+          <div class="section-divider"></div>
         </div>
         <FilterPanel />
       </section>
@@ -78,7 +78,7 @@ const featuredProjects = projects.filter(p => p.data.featured);
           </p>
           <button
             id="clear-filters"
-            class="inline-flex items-center gap-2 px-5 py-3 text-sm font-medium rounded-lg bg-foreground text-background hover:bg-foreground/90 transition-all duration-300"
+            class="button-primary"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
