@@ -1,14 +1,23 @@
 ---
 export interface Props {
 	sections?: string[];
+	containerType?: 'default' | 'wide' | 'full';
 }
 
 const {
-	sections = ["intro", "projects", "thoughts", "connect"]
+	sections = ["intro", "projects", "thoughts", "connect"],
+	containerType = 'default'
 } = Astro.props;
+
+// Use consistent positioning across all pages
+const navClasses = {
+	'default': 'fixed left-6 lg:left-12 top-1/2 -translate-y-1/2 z-10 hidden lg:block',
+	'wide': 'fixed left-6 lg:left-12 top-1/2 -translate-y-1/2 z-10 hidden lg:block', 
+	'full': 'fixed left-6 lg:left-12 top-1/2 -translate-y-1/2 z-10 hidden lg:block'
+};
 ---
 
-<nav class="fixed left-8 top-1/2 -translate-y-1/2 z-10 hidden lg:block">
+<nav class={navClasses[containerType]}>
 	<div class="flex flex-col gap-4">
 		{sections.map((section) => (
 			<button
