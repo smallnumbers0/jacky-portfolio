@@ -1,69 +1,73 @@
 ---
-title: "Performance-First Development"
-excerpt: "Why performance should be a first-class citizen in your development workflow, not an afterthought."
-date: 2024-10-15
-readTime: "6 min"
+title: "Trackflation: Why High Schoolers Are Running Sub-5 Like It's Nothing"
+excerpt: "The curious case of how running times have gotten dramatically faster, and what's really driving this phenomenon in high school track."
+date: 2025-09-27
+readTime: "5 min"
 published: true
 featured: false
-tags: ["performance", "web vitals", "optimization", "user experience"]
+tags: ["running", "track and field", "athletics", "performance", "high school sports"]
 ---
 
-# Performance-First Development
+If you've been following high school track and field lately, you might have noticed something wild: kids are running times that would have been legendary just a generation ago. Sub-5 minute miles? They're practically common now. What used to be the stuff of local newspaper headlines is now just another Tuesday at the track.
 
-In today's fast-paced digital world, performance isn't just a nice-to-have—it's a fundamental requirement. Users expect instant responses, and search engines reward fast sites. Yet too often, performance is treated as an afterthought.
+## The Numbers Don't Lie
 
-## The Cost of Slow
+Let's put this in perspective. In 1980, breaking 5 minutes in the mile as a high schooler made you a legitimate state contender in most places. Today? You might not even make varsity at some programs.
 
-Before diving into solutions, let's understand the impact:
+- **1980s**: ~50 high schoolers ran sub-5:00 nationwide per year
+- **2020s**: Over 500+ high schoolers run sub-5:00 annually
+- **Sub-4:30**: Once unthinkable, now happens multiple times per season
 
-- **1 second delay** = 7% reduction in conversions
-- **40% of users** abandon sites that take more than 3 seconds to load
-- **Google's ranking algorithm** heavily weighs Core Web Vitals
+The shift is so dramatic that recruiting standards have completely changed. College coaches who once salivated over a 4:45 miler now consider it a "decent" time.
 
-These aren't just numbers—they represent real business impact.
+## What's Driving This Speed Revolution?
 
-## Building Performance Into Your Workflow
+### Better Training Science
+Gone are the days of just "running lots of miles." Today's high school programs use:
+- Heart rate-based training zones
+- Periodization models borrowed from elite programs  
+- Data-driven recovery protocols
+- Sophisticated strength and conditioning
 
-### 1. Measure Early and Often
+### The Technology Factor
+Modern runners have advantages their predecessors couldn't dream of:
+- GPS watches tracking every split
+- Running apps analyzing stride patterns
+- Nutrition science optimized for performance
+- Recovery tools like compression boots and ice baths
 
-Set up performance monitoring from day one:
-- Core Web Vitals tracking
-- Synthetic monitoring for consistent baselines
-- Real User Monitoring (RUM) for actual user experience
+### Club Culture Changes Everything
+The biggest game-changer? Year-round club programs. What used to be a 3-month high school season is now 12 months of structured training. Kids are logging 60-80 mile weeks like it's normal.
 
-### 2. Budget Your Performance
+## The Participation Paradox
 
-Just like financial budgets, performance budgets set clear constraints:
-```javascript
-// Example performance budget
-const PERFORMANCE_BUDGET = {
-  'bundle-size': '250kb',
-  'first-contentful-paint': '1.5s',
-  'largest-contentful-paint': '2.5s',
-  'cumulative-layout-shift': '0.1'
-}
-```
+Here's the twist: while the top times have gotten insane, the middle of the pack hasn't improved nearly as much. It's classic sports inflation—the elite get more elite, creating a perception that "everyone" is fast when really it's just the cream of the crop getting much, much better.
 
-### 3. Optimize the Critical Path
+### The Old Days Reality Check
+Let's be honest about the "good old days." That sub-5 miler from 1985? They probably:
+- Ran 30 miles per week (if they were serious)
+- Did track workouts twice a week
+- Had zero sports science support
+- Wore canvas shoes that weighed 2 pounds
 
-Focus on what matters most for perceived performance:
-- Minimize render-blocking resources
-- Prioritize above-the-fold content
-- Use resource hints strategically
+Today's sub-5 runner is a different breed entirely—essentially a semi-professional athlete with professional-level support.
 
-## The Performance Mindset
+## What This Means for the Sport
 
-The biggest shift is cultural. When performance is baked into your development process from the start, it becomes second nature. Your team starts asking:
+This trackflation creates some interesting dynamics:
 
-- "How will this feature impact loading time?"
-- "Can we lazy-load this component?"
-- "What's the lightest way to implement this?"
+**For Athletes**: The bar keeps getting higher. What used to guarantee a college scholarship now gets you a polite "thanks for your interest" email.
 
-## Tools That Help
+**For Coaches**: The pressure to produce faster times has never been greater. Programs that don't adapt get left behind.
 
-Modern tooling makes performance optimization more accessible:
-- **Lighthouse CI** for automated audits
-- **Webpack Bundle Analyzer** for size optimization
-- **React DevTools Profiler** for component optimization
+**For Fans**: We're witnessing performances that would have been world-class just decades ago, happening at local high school meets.
 
-Remember: Performance is a feature, not a bug fix. Treat it with the respect it deserves.
+## The Bottom Line
+
+Are high schoolers today actually that much more talented than previous generations? Probably not. But they're certainly more prepared, better trained, and operating in a system designed to maximize performance from day one.
+
+The sub-5 mile has become track's equivalent of breaking 100 in golf—still impressive, but no longer the mythical barrier it once was. And honestly? That's pretty amazing. We're watching the democratization of speed in real time.
+
+The question isn't whether times will keep dropping (they will), but how fast is too fast for a 17-year-old? That's a conversation for another day.
+
+*What do you think is driving these incredible performances? Are we witnessing evolution in action, or just better training methods? Let me know your thoughts.*
