@@ -72,8 +72,6 @@ if (data.notebook) {
         </div>
         <div class="flex items-center gap-4 text-sm text-muted-foreground mb-4">
           <span class="font-medium">{data.role}</span>
-          <span class="text-muted-foreground/60">•</span>
-          <span>{data.timeframe}</span>
           {data.team && data.team.length > 0 && (
             <>
               <span class="text-muted-foreground/60">•</span>
@@ -100,7 +98,6 @@ if (data.notebook) {
   <!-- Live Demo Section -->
   {data.demo && (
     <section class="mb-16">
-      <h2>Live Demo (Baseline)</h2>
       <div class="mt-4">
         {data.demo.type === "iframe" && (
           <div class="border border-border rounded-lg overflow-hidden">
